@@ -2,6 +2,8 @@ package com.java.yourfarmapp;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
 import android.widget.ImageView;
@@ -18,8 +20,15 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.java.yourfarmapp.Common.Common;
+import com.java.yourfarmapp.Model.UserModel;
+import com.java.yourfarmapp.ui.home.HomeFragment;
+import com.java.yourfarmapp.ui.product.ProductFragment;
+import com.java.yourfarmapp.ui.profile.ProfileFragment;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -28,34 +37,25 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-public class HomeActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity implements   NavigationView.OnNavigationItemSelectedListener{
 
     private AppBarConfiguration mAppBarConfiguration;
 
-    private TextView full_name, phone_number;
 
-    private FirebaseDatabase firebaseDatabase;
-    private DatabaseReference databaseReference;
-    private FirebaseAuth firebaseAuth;
-    private FirebaseUser firebaseUser;
-
-
-    private ImageView profile_picture_header;
-    private TextView full_name_header, phone_number_header;
-
-
+    private DrawerLayout drawer;
+    private NavigationView navigationView;
+    private NavController navController;
+    private int menuClick = -1;
 
     String currentUserID;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shop);
 
-        firebaseAuth = FirebaseAuth.getInstance();
-
         Toolbar toolbar = findViewById(R.id.toolbar);
-        //setSupportActionBar(toolbar);
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -69,75 +69,76 @@ public class HomeActivity extends AppCompatActivity {
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         View headerView = navigationView.getHeaderView(0);
-        full_name = (TextView) navigationView.findViewById(R.id.full_name_header);
-//
-//        final TextView full_name = (TextView) headerView.findViewById(R.id.full_name_header);
-//        final TextView phone_number = (TextView) headerView.findViewById(R.id.phone_number_header);
 
-        // Passing each menu ID as a set of Ids because each
-        // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_product, R.id.nav_profile, R.id.nav_slideshow)
+                R.id.nav_home, R.id.nav_product, R.id.nav_profile, R.id.nav_settings)
                 .setDrawerLayout(drawer)
                 .build();
 
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+        navigationView.setNavigationItemSelectedListener(this);
+        navigationView.bringToFront();
 
-
-        FirebaseAuth.AuthStateListener authStateListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user == null) {
-                    startActivity(new Intent(HomeActivity.this, SignInActivity.class));
-                    finish();
-                }
-            }
-        };
-
-        if (firebaseUser != null) {
-            currentUserID = firebaseUser.getUid();
-        }
-
-        databaseReference = FirebaseDatabase.getInstance().getReference("User").child("User");
-        databaseReference.child(currentUserID).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if(dataSnapshot.exists()) {
-                    if (dataSnapshot.hasChild("fullName")){
-                        String fullname = dataSnapshot.child("fullName").getValue().toString();
-                        //full_name.setText(fullname);
-                } else {
-                    Toast.makeText(HomeActivity.this, "Profile name do not exists...", Toast.LENGTH_SHORT).show();
-                }
-
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
-
+        menuClick = R.id.nav_home;
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-//        if(mAuth.getCurrentUser() == null) {
-//            finish();
-//            startActivity(new Intent(this, SignInActivity.class));
-//        }
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        menuItem.setChecked(true);
+        switch(menuItem.getItemId()) {
+            case R.id.nav_home:
+                if(menuItem.getItemId() != menuClick) {
+                    navController.popBackStack();
+                    navController.navigate(R.id.nav_home);
+                }
+                break;
+            case R.id.nav_product:
+                if(menuItem.getItemId() != menuClick) {
+                    navController.popBackStack();
+                    navController.navigate(R.id.nav_product);
+                }
+                break;
+            case R.id.nav_profile:
+                if(menuItem.getItemId() != menuClick) {
+                    navController.popBackStack();
+                    navController.navigate(R.id.nav_profile);
+                }
+                break;
+
+            case R.id.sign_out:
+                signOut();
+
+                break;
+
+            default:
+                menuClick = -1;
+                break;
+        }
+        menuClick = menuItem.getItemId();
+        return true;
+    }
+
+    private void signOut() {
+        Common.currentUser = null;
+
+        FirebaseAuth.getInstance().signOut();
+        Intent intent = new Intent(HomeActivity.this, SignInActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+
+        finish();
     }
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.shop, menu);
         return true;
     }

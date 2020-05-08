@@ -18,6 +18,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class SignInActivity extends AppCompatActivity {
 
@@ -27,6 +29,9 @@ public class SignInActivity extends AppCompatActivity {
     private ProgressBar progressBar;
 
     private FirebaseAuth auth;
+
+    DatabaseReference userReference = FirebaseDatabase.getInstance().getReference().child("User");
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
 
 
     @Override
@@ -57,8 +62,9 @@ public class SignInActivity extends AppCompatActivity {
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(SignInActivity.this, SignUpActivity.class));
+                goToSignUpActivity();
             }
+
         });
 
         signInButton.setOnClickListener(new View.OnClickListener() {
@@ -93,7 +99,7 @@ public class SignInActivity extends AppCompatActivity {
                                         Toast.makeText(SignInActivity.this, getString(R.string.auth_failed), Toast.LENGTH_LONG).show();
                                     }
                                 } else {
-                                    Intent intent = new Intent(SignInActivity.this, MainActivity.class);
+                                    Intent intent = new Intent(SignInActivity.this, HomeActivity.class);
                                     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                                     startActivity(intent);
                                     finish();
@@ -104,5 +110,10 @@ public class SignInActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void goToSignUpActivity() {
+        Intent intent = new Intent(this, SignUpActivity.class);
+        startActivity(intent);
     }
 }
