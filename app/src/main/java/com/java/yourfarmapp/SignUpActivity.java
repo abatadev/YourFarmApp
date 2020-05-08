@@ -21,7 +21,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.java.yourfarmapp.Model.User;
+import com.java.yourfarmapp.Model.UserModel;
 
 public class SignUpActivity extends AppCompatActivity {
 
@@ -40,7 +40,7 @@ public class SignUpActivity extends AppCompatActivity {
     FirebaseDatabase database;
     DatabaseReference databaseReference;
 
-    User userModel;
+    UserModel userModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +61,7 @@ public class SignUpActivity extends AppCompatActivity {
         rb_farmer = findViewById(R.id.radio_button_farmer);
         rb_dealer = findViewById(R.id.radio_button_dealer);
 
-        userModel = new User();
+        userModel = new UserModel();
         database = FirebaseDatabase.getInstance();
         databaseReference = database.getReference("User");
 
@@ -100,7 +100,7 @@ public class SignUpActivity extends AppCompatActivity {
                 String full_name_input = full_name.getText().toString();
                 String phone_number_input = phone_number.getText().toString();
                 String address = physical_address.getText().toString();
-                userModel = new User(email, password, phone_number_input, full_name_input, address, isFarmer, isDealer);
+                userModel = new UserModel(email, password, phone_number_input, full_name_input, address, isFarmer, isDealer);
 
                 registerUser(email, password);
             }

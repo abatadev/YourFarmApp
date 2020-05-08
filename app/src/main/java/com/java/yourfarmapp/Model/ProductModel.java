@@ -1,10 +1,10 @@
 package com.java.yourfarmapp.Model;
 
-public class Product {
+public class ProductModel {
     private String productId;
     private String cropType, cropName, cropPrice, cropDescription;
 
-    public Product() {
+    public ProductModel() {
     }
 
     public String getProductId() {

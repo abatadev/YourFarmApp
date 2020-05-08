@@ -1,19 +1,19 @@
 package com.java.yourfarmapp.Model;
 
-public class User {
+public class UserModel {
     private String email, password, phoneNumber, fullName, contactNumber, address;
     private boolean isFarmer, isDealer;
 
-    public User() {
+    public UserModel() {
 
     }
 
-    public User(String email, String password) {
+    public UserModel(String email, String password) {
         this.email = email;
         this.password = password;
     }
 
-    public User(String email, String password, String phoneNumber, String fullName, String address, boolean isFarmer, boolean isDealer) {
+    public UserModel(String email, String password, String phoneNumber, String fullName, String address, boolean isFarmer, boolean isDealer) {
         this.email = email;
         this.password = password;
         this.phoneNumber = phoneNumber;

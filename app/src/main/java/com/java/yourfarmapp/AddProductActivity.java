@@ -16,7 +16,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.java.yourfarmapp.Model.Product;
+import com.java.yourfarmapp.Model.ProductModel;
 
 public class AddProductActivity extends AppCompatActivity {
 
@@ -32,7 +32,7 @@ public class AddProductActivity extends AppCompatActivity {
 
     Button buttonSave;
 
-    Product productModel;
+    ProductModel productModel;
 
     @Override
     protected  void onCreate(Bundle savedInstanceState) {
@@ -46,7 +46,7 @@ public class AddProductActivity extends AppCompatActivity {
 
         buttonSave = (Button) findViewById(R.id.save_product_button);
 
-        productModel = new Product();
+        productModel = new ProductModel();
         productReference = FirebaseDatabase.getInstance().getReference().child("Product");
         buttonSave.setOnClickListener(new View.OnClickListener() {
             @Override
