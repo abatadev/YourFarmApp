@@ -1,7 +1,7 @@
 package com.java.yourfarmapp.Model;
 
 public class UserModel {
-    private String UID, email, password, phoneNumber, fullName, contactNumber, address;
+    private String UID, email, password, number, fullName, address;
     private boolean isFarmer, isDealer;
 
     public UserModel() {
@@ -14,10 +14,11 @@ public class UserModel {
         this.password = password;
     }
 
-    public UserModel(String email, String password, String phoneNumber, String fullName, String address, boolean isFarmer, boolean isDealer) {
+    public UserModel(String UID, String email, String password, String number, String fullName, String address, boolean isFarmer, boolean isDealer) {
+        this.UID = UID;
         this.email = email;
         this.password = password;
-        this.phoneNumber = phoneNumber;
+        this.number = number;
         this.fullName = fullName;
         this.address = address;
         this.isFarmer = isFarmer;
@@ -32,12 +33,12 @@ public class UserModel {
         this.UID = UID;
     }
 
-    public String getContactNumber() {
-        return contactNumber;
+    public String getEmail() {
+        return email;
     }
 
-    public void setContactNumber(String contactNumber) {
-        this.contactNumber = contactNumber;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getPassword() {
@@ -48,20 +49,12 @@ public class UserModel {
         this.password = password;
     }
 
-    public String getEmail() {
-        return email;
+    public String getNumber() {
+        return number;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
+    public void setNumber(String number) {
+        this.number = number;
     }
 
     public String getFullName() {

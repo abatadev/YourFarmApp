@@ -29,7 +29,7 @@ public class ProfileViewModel extends ViewModel {
     private void loadUserInformation(String shipperPhone) {
         final Query orderRef = FirebaseDatabase.getInstance().getReference(Common.USER_REF)
                 .orderByChild("shipperPhone")
-                .equalTo(Common.currentUser.getPhoneNumber());
+                .equalTo(Common.currentUser.getNumber());
 
         orderRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
