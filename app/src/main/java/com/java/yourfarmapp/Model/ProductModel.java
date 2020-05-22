@@ -7,12 +7,17 @@ public class ProductModel {
     private String cropDescription;
     private String cropImage;
     private String cropQuantity;
+    private String cropQuantityType;
 
     private String productCategoryID;
     private String productCategoryName;
     private String productCategoryImage;
 
     public ProductModel() {
+    }
+
+    public ProductModel(String cropQuantityType) {
+        this.cropQuantityType = cropQuantity;
     }
 
     public ProductModel(String productCategoryID, String productCategoryName, String productCategoryImage) {
@@ -51,6 +56,14 @@ public class ProductModel {
 
     public void setCropQuantity(String cropQuantity) {
         this.cropQuantity = cropQuantity;
+    }
+
+    public String getCropQuantityType() {
+        return cropQuantityType;
+    }
+
+    public void setCropQuantityType(String cropQuantityType) {
+        this.cropQuantityType = cropQuantityType;
     }
 
     public String getCropDescription() {

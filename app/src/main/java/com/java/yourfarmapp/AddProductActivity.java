@@ -79,7 +79,7 @@ public class AddProductActivity extends AppCompatActivity {
 
         UserModel userModel = new UserModel();
 
-        generateCategories();
+        //generateCategories();
         loadCategoryList();
 
         buttonSave.setOnClickListener(new View.OnClickListener() {
@@ -88,6 +88,10 @@ public class AddProductActivity extends AppCompatActivity {
                submitProductEntry();
             }
         });
+
+    }
+
+    private void uploadProductImage() {
 
     }
 
