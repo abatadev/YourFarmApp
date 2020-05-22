@@ -57,16 +57,22 @@ public class ProfileFragment extends Fragment {
     private TextView user_address;
     private TextView profile_email_address;
     private TextView contact_number;
+    private TextView account_type;
 
     private ImageView image_name;
     private ImageView image_address;
     private ImageView image_email;
     private ImageView image_number;
+    private ImageView image_account_type;
 
     private RadioButton dealer;
     private RadioButton farmer;
+    private RadioGroup radioGroup;
 
     private Button saveAccountType;
+    private Button buttonFarmer;
+    private Button buttonDealer;
+
 
     private String currentUserId;
     private String firebaseDBName;
@@ -76,6 +82,8 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
+        final String TAG = "onCreateView";
+
         productViewModel = ViewModelProviders.of(this).get(ProductViewModel.class); // Call view model
         View root = inflater.inflate(R.layout.fragment_profile, container, false);
 
@@ -84,12 +92,14 @@ public class ProfileFragment extends Fragment {
         user_address = root.findViewById(R.id.user_address);
         profile_email_address = root.findViewById(R.id.user_email_address);
         contact_number = root.findViewById(R.id.user_contact_number);
+        account_type = root.findViewById(R.id.user_account_type);
 
         //Image
         image_name = root.findViewById(R.id.image_name_icon);
         image_address = root.findViewById(R.id.image_address_icon);
         image_email = root.findViewById(R.id.image_email_icon);
         image_number = root.findViewById(R.id.image_number_icon);
+        image_account_type = root.findViewById(R.id.image_account_type_icon);
 
         fireAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -134,7 +144,13 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        updateAccountType();
+        image_account_type.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG, "Clicked");
+                updateAccountType();
+            }
+        });
 
         return root;
     }
@@ -189,18 +205,11 @@ public class ProfileFragment extends Fragment {
     }
 
     private void updateAccountType() {
-        View itemView = LayoutInflater.from(getContext()).inflate(R.layout.fragment_profile, null);
-
         ref = FirebaseDatabase.getInstance().getReference(Common.USER_REF);
         mUser = FirebaseAuth.getInstance().getCurrentUser();
 
         String currentUserId = mUser.getUid();
         String firebaseDBName = ref.getKey();
-
-        dealer = itemView.findViewById(R.id.is_dealer);
-        farmer = itemView.findViewById(R.id.is_farmer);
-        Button saveAccountType = itemView.findViewById(R.id.button_type);
-        RadioGroup radioGroup = itemView.findViewById(R.id.radio_group);
 
         final String TAG = "updateAccountType()";
 
@@ -209,48 +218,52 @@ public class ProfileFragment extends Fragment {
 
         Log.d(TAG, "Starting " + TAG);
 
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle("Change Account Type");
+        builder.setMessage("Please change your account type");
 
-        radioGroup.clearCheck();
-        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedID) {
-                RadioButton radioButton = (RadioButton) group.findViewById(checkedID);
+        View itemView = LayoutInflater.from(getContext()).inflate(R.layout.layout_update_account_type, null);
+
+        builder.setPositiveButton("Farmer", (((dialogInterface, i) -> {
+            boolean isFarmer = true;
+            boolean isDealer = false;
+            profileRef.child(currentUserId).child("dealer").setValue(isDealer);
+            profileRef.child(currentUserId).child("farmer").setValue(isFarmer);
+
+            Toast.makeText(getContext(), "Account type changed.", Toast.LENGTH_SHORT).show();
+
+            if(isFarmer = true) {
+                String accountTypeString = "Farmer";
+                account_type.setText(accountTypeString);
+            } else {
+                // IDK
             }
-        });
 
-//        isDealer = true;
-//        isFarmer = false;
-//
-//        profileRef.child(currentUserId).child("dealer").setValue(isDealer);
-//
-//        userModel.setFarmer(isFarmer);
-//        userModel.setDealer(isDealer);
+            dialogInterface.dismiss();
 
+        })));
 
-        saveAccountType.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Toast.makeText(getContext(), "Submitting...", Toast.LENGTH_SHORT).show();
-                Log.d(TAG, "onClick" + TAG);
+        builder.setNegativeButton("Dealer", (((dialogInterface, i) -> {
+            boolean isFarmer = false;
+            boolean isDealer = true;
+            profileRef.child(currentUserId).child("dealer").setValue(isDealer);
+            profileRef.child(currentUserId).child("farmer").setValue(isFarmer);
 
-                int selectedId = radioGroup.getCheckedRadioButtonId();
+            Toast.makeText(getContext(), "Account type changed.", Toast.LENGTH_SHORT).show();
 
-                if(selectedId == -1) {
-                    Toast.makeText(getContext(), "No account type selected", Toast.LENGTH_SHORT).show();
-                } else {
-                    RadioButton radioButton = radioGroup.findViewById(selectedId);
-                    if(selectedId == 1) {
-                        Toast.makeText(getContext(), "Option 1: Dealer", Toast.LENGTH_SHORT).show();
-                    } else if(selectedId == 2) {
-                        Toast.makeText(getContext(), "Option 2: Farmer", Toast.LENGTH_SHORT).show();
-                    }
-                }
-
-                Toast.makeText(getContext(), "Submitted...", Toast.LENGTH_SHORT).show();
+            if(isDealer = true) {
+                String accountTypeString = "Dealer";
+                account_type.setText(accountTypeString);
+            } else {
+                // IDK
             }
-        });
 
+            dialogInterface.dismiss();
+        })));
 
+        builder.setView(itemView);
+        AlertDialog dialog = builder.create();
+        dialog.show();
 
     }
 
