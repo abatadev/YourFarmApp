@@ -193,6 +193,13 @@ public class ProfileFragment extends Fragment {
                 user_address.setText(userModel.getAddress());
                 profile_email_address.setText(userModel.getEmail());
                 contact_number.setText(userModel.getNumber());
+
+                if(userModel.isDealer()) {
+                    account_type.setText("Dealer");
+                } else if(userModel.isFarmer()) {
+                    account_type.setText("Farmer");
+                }
+
             }
 
             @Override
@@ -288,9 +295,15 @@ public class ProfileFragment extends Fragment {
 
         builder.setPositiveButton("Update", ((dialogInterface, i) -> {
             String fullName = edit_name.getText().toString();
-            profileRef.child(currentUserId).child("fullName").setValue(fullName);
 
-            // Add testing 
+            if(fullName != null && fullName.length() > 0) {
+
+                profileRef.child(currentUserId).child("fullName").setValue(fullName);
+
+            } else {
+                Toast.makeText(getContext(), "Full name cannot be empty.", Toast.LENGTH_SHORT).show();
+            }
+
         }));
 
         builder.setView(itemView);
@@ -320,7 +333,14 @@ public class ProfileFragment extends Fragment {
 
         builder.setPositiveButton("Update", ((dialogInterface, i) -> {
             String address = editAddress.getText().toString();
-            profileRef.child(currentUserId).child("address").setValue(address);
+            if(fullName != null && fullName.length() > 0) {
+
+                profileRef.child(currentUserId).child("address").setValue(address);
+
+            } else {
+                Toast.makeText(getContext(), "Address cannot be empty.", Toast.LENGTH_SHORT).show();
+            }
+
 
             // Add testing
         }));
@@ -400,9 +420,12 @@ public class ProfileFragment extends Fragment {
 
         builder.setPositiveButton("Update", ((dialogInterface, i) -> {
             String number = editNumber.getText().toString();
-            profileRef.child(currentUserId).child("number").setValue(number);
 
-            // Add testing
+            if(number != null) {
+                profileRef.child(currentUserId).child("number").setValue(number);
+            } else {
+                Toast.makeText(getContext(), "Contact number cannot be empty.", Toast.LENGTH_SHORT).show();
+            }
         }));
 
         builder.setView(itemView);

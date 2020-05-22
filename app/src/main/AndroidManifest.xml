@@ -22,9 +22,9 @@
 
         <activity android:name=".SignUpActivity" />
         <activity android:name=".MainActivity" />
-        <activity android:name=".HomeActivity">
+        <activity android:name=".HomeActivity" />
+        <activity android:name=".AddProductActivity"/>
 
-        </activity>
     </application>
 
 </manifest>

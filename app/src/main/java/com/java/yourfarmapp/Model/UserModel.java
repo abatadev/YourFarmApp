@@ -1,8 +1,16 @@
 package com.java.yourfarmapp.Model;
 
 public class UserModel {
-    private String UID, email, password, number, fullName, address;
-    private boolean isFarmer, isDealer;
+
+    private String UID;
+    private String email;
+    private String password;
+    private String number;
+    private String fullName;
+    private String address;
+
+    private boolean isFarmer;
+    private boolean isDealer;
 
     public UserModel() {
 
@@ -14,15 +22,13 @@ public class UserModel {
         this.password = password;
     }
 
-    public UserModel(String UID, String email, String password, String number, String fullName, String address, boolean isFarmer, boolean isDealer) {
+    public UserModel(String UID, String email, String password, String number, String fullName, String address) {
         this.UID = UID;
         this.email = email;
         this.password = password;
         this.number = number;
         this.fullName = fullName;
         this.address = address;
-        this.isFarmer = isFarmer;
-        this.isDealer = isDealer;
     }
 
     public String getUID() {

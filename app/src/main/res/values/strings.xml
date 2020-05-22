@@ -23,4 +23,16 @@
     <string name="menu_slideshow">Slideshow</string>
 
     <string name="home_second">Home Second</string>
+
+    <string-array name="category_array">
+        <item>Category 1</item>
+        <item>Category 2</item>
+        <item>Category 3</item>
+    </string-array>
+
+    <string-array name="quantity_array">
+        <item>Kilos</item>
+        <item>Quantity</item>
+    </string-array>
+
 </resources>

@@ -1,34 +1,32 @@
 package com.java.yourfarmapp.Model;
 
 public class ProductModel {
-    private String productId;
-    private String cropType, cropName, cropPrice, cropDescription;
+    private String cropProductID;
+    private String cropName;
+    private String cropPrice;
+    private String cropDescription;
+    private String cropImage;
+    private String cropQuantity;
+
+    private String productCategoryID;
+    private String productCategoryName;
+    private String productCategoryImage;
 
     public ProductModel() {
     }
 
-    public String getProductId() {
-        return productId;
+    public ProductModel(String productCategoryID, String productCategoryName, String productCategoryImage) {
+        this.productCategoryID = productCategoryID;
+        this.productCategoryName = productCategoryName;
+        this.productCategoryImage = productCategoryImage;
     }
 
-    public String getCropDescription() {
-        return cropDescription;
+    public String getCropProductID() {
+        return cropProductID;
     }
 
-    public void setCropDescription(String cropDescription) {
-        this.cropDescription = cropDescription;
-    }
-
-    public void setProductId(String productId) {
-        this.productId = productId;
-    }
-
-    public String getCropType() {
-        return cropType;
-    }
-
-    public void setCropType(String cropType) {
-        this.cropType = cropType;
+    public void setCropProductID(String cropProductID) {
+        this.cropProductID = cropProductID;
     }
 
     public String getCropName() {
@@ -45,5 +43,53 @@ public class ProductModel {
 
     public void setCropPrice(String cropPrice) {
         this.cropPrice = cropPrice;
+    }
+
+    public String getCropQuantity() {
+        return cropQuantity;
+    }
+
+    public void setCropQuantity(String cropQuantity) {
+        this.cropQuantity = cropQuantity;
+    }
+
+    public String getCropDescription() {
+        return cropDescription;
+    }
+
+    public void setCropDescription(String cropDescription) {
+        this.cropDescription = cropDescription;
+    }
+
+    public String getCropImage() {
+        return cropImage;
+    }
+
+    public void setCropImage(String cropImage) {
+        this.cropImage = cropImage;
+    }
+
+    public String getProductCategoryID() {
+        return productCategoryID;
+    }
+
+    public void setProductCategoryID(String productCategoryID) {
+        this.productCategoryID = productCategoryID;
+    }
+
+    public String getProductCategoryName() {
+        return productCategoryName;
+    }
+
+    public void setProductCategoryName(String productCategoryName) {
+        this.productCategoryName = productCategoryName;
+    }
+
+    public String getProductCategoryImage() {
+        return productCategoryImage;
+    }
+
+    public void setProductCategoryImage(String productCategoryImage) {
+        this.productCategoryImage = productCategoryImage;
     }
 }
