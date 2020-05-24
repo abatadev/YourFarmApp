@@ -1,8 +1,12 @@
 package com.java.yourfarmapp.ui.profile;
 
+import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,8 +26,10 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.google.android.gms.auth.api.signin.internal.Storage;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -32,13 +38,23 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.java.yourfarmapp.Common.Common;
 import com.java.yourfarmapp.Model.UserModel;
 import com.java.yourfarmapp.R;
 import com.java.yourfarmapp.SignInActivity;
 import com.java.yourfarmapp.ui.product.ProductViewModel;
 
+import java.util.UUID;
+
+import dmax.dialog.SpotsDialog;
+
 public class ProfileFragment extends Fragment {
+
+    private static final int PICK_IMAGE_REQUEST = 1234;
+
+    private Uri imagePath = null;
 
     private ProductViewModel productViewModel;
     private FirebaseAuth firebaseAuth;
@@ -51,7 +67,11 @@ public class ProfileFragment extends Fragment {
 
     private static final String TAG = "ProfileFragment.java";
 
+    static final int REQUEST_IMAGE_CAPTURE = 1;
+
     private static final String SOURCE = "readUserInformation()";
+
+    AlertDialog dialog;
 
     private TextView fullName;
     private TextView user_address;
@@ -59,6 +79,7 @@ public class ProfileFragment extends Fragment {
     private TextView contact_number;
     private TextView account_type;
 
+    private ImageView add_profile_image;
     private ImageView image_name;
     private ImageView image_address;
     private ImageView image_email;
@@ -76,6 +97,9 @@ public class ProfileFragment extends Fragment {
 
     private String currentUserId;
     private String firebaseDBName;
+
+    FirebaseStorage storage;
+    private StorageReference storageReference;
 
     View root = null;
 
@@ -95,6 +119,7 @@ public class ProfileFragment extends Fragment {
         account_type = root.findViewById(R.id.user_account_type);
 
         //Image
+        add_profile_image = root.findViewById(R.id.profile_picture);
         image_name = root.findViewById(R.id.image_name_icon);
         image_address = root.findViewById(R.id.image_address_icon);
         image_email = root.findViewById(R.id.image_email_icon);
@@ -105,13 +130,14 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser currentUser = firebaseAuth.getCurrentUser();
-
                 if (currentUser == null) {
                     //user not login
+                    // TO DO - Pass intent to login screen
                     Log.d(TAG, "Value | No user logged in");
                 }
             }
         };
+
 
         readUserInformation();
 
@@ -155,16 +181,6 @@ public class ProfileFragment extends Fragment {
         return root;
     }
 
-    public void retrieveFirebaseInformation() {
-        ref = FirebaseDatabase.getInstance().getReference(Common.USER_REF);
-        mUser = FirebaseAuth.getInstance().getCurrentUser();
-        currentUserId = mUser.getUid();
-
-        firebaseDBName = ref.getKey();
-        DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference(Common.USER_REF).child(currentUserId);
-        DatabaseReference profileRef = FirebaseDatabase.getInstance().getReference(Common.USER_REF);
-    }
-
     private void readUserInformation() {
         final String TAG = "readUserInformation()";
 
@@ -188,6 +204,7 @@ public class ProfileFragment extends Fragment {
                 Log.d(TAG, "Value for USER ID: " + currentUserId);
                 Log.d(TAG, "Value for Current user logged in is: " + mUser);
                 Log.d(TAG, "Value for email: " + userModel.getEmail());
+                Log.d(TAG, "Full name: " + mUser.getEmail());
 
                 fullName.setText(userModel.getFullName());
                 user_address.setText(userModel.getAddress());
@@ -433,11 +450,26 @@ public class ProfileFragment extends Fragment {
         dialog.show();
     }
 
+    public void updateProfile() {
+
+    }
+
+    public void storage() {
+
+    }
+
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+
 }
 
 

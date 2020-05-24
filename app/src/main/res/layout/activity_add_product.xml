@@ -122,7 +122,7 @@
             android:layout_height="wrap_content"
             android:textStyle="bold"
             android:textSize="22sp"
-            android:hint="Descrpition"
+            android:hint="Description"
             android:minLines="4"
             android:maxLines="5"
             />

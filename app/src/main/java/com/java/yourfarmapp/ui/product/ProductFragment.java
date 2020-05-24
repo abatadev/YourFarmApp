@@ -47,6 +47,8 @@ public class ProductFragment extends Fragment {
             }
         });
 
+
+
         return root;
     }
 }

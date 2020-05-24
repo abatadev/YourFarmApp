@@ -1,5 +1,7 @@
 package com.java.yourfarmapp.Model;
 
+import java.util.List;
+
 public class ProductModel {
     private String cropProductID;
     private String cropName;
@@ -12,6 +14,11 @@ public class ProductModel {
     private String productCategoryID;
     private String productCategoryName;
     private String productCategoryImage;
+
+    private String dealerUid;
+    private String dealerName;
+
+    List<ProductModel> products;
 
     public ProductModel() {
     }
@@ -104,5 +111,21 @@ public class ProductModel {
 
     public void setProductCategoryImage(String productCategoryImage) {
         this.productCategoryImage = productCategoryImage;
+    }
+
+    public String getDealerUid() {
+        return dealerUid;
+    }
+
+    public void setDealerUid(String dealerUid) {
+        this.dealerUid = dealerUid;
+    }
+
+    public String getDealerName() {
+        return dealerName;
+    }
+
+    public void setDealerName(String dealerName) {
+        this.dealerName = dealerName;
     }
 }
