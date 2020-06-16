@@ -11,14 +11,11 @@ public class ProductModel {
     private String cropQuantity;
     private String cropQuantityType;
 
-    private String productCategoryID;
-    private String productCategoryName;
-    private String productCategoryImage;
+    private String userName;
+    private String userKey;
+    private String userPhoneNumber;
 
-    private String dealerUid;
-    private String dealerName;
-
-    List<ProductModel> products;
+    List<UserModel> users;
 
     public ProductModel() {
     }
@@ -27,13 +24,7 @@ public class ProductModel {
         this.cropQuantityType = cropQuantity;
     }
 
-    public ProductModel(String productCategoryID, String productCategoryName, String productCategoryImage) {
-        this.productCategoryID = productCategoryID;
-        this.productCategoryName = productCategoryName;
-        this.productCategoryImage = productCategoryImage;
-    }
-
-    public String getCropProductID() {
+    public String getCropProductID(String key) {
         return cropProductID;
     }
 
@@ -89,43 +80,32 @@ public class ProductModel {
         this.cropImage = cropImage;
     }
 
-    public String getProductCategoryID() {
-        return productCategoryID;
+    public String getCropProductID() {
+        return cropProductID;
     }
 
-    public void setProductCategoryID(String productCategoryID) {
-        this.productCategoryID = productCategoryID;
+    public String getUserName() {
+        return userName;
     }
 
-    public String getProductCategoryName() {
-        return productCategoryName;
+    public String getUserKey() {
+        return userKey;
     }
 
-    public void setProductCategoryName(String productCategoryName) {
-        this.productCategoryName = productCategoryName;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
-    public String getProductCategoryImage() {
-        return productCategoryImage;
+    public void setUserKey(String userKey) {
+        this.userKey = userKey;
     }
 
-    public void setProductCategoryImage(String productCategoryImage) {
-        this.productCategoryImage = productCategoryImage;
+    public String getUserPhoneNumber() {
+        return userPhoneNumber;
     }
 
-    public String getDealerUid() {
-        return dealerUid;
+    public void setUserPhoneNumber(String userPhoneNumber) {
+        this.userPhoneNumber = userPhoneNumber;
     }
 
-    public void setDealerUid(String dealerUid) {
-        this.dealerUid = dealerUid;
-    }
-
-    public String getDealerName() {
-        return dealerName;
-    }
-
-    public void setDealerName(String dealerName) {
-        this.dealerName = dealerName;
-    }
 }
