@@ -145,64 +145,6 @@ public class AddProductActivity extends AppCompatActivity {
         }
     }
 
-    private void sendProductToFirebase() {
-        // Two references
-        userReference = FirebaseDatabase.getInstance().getReference().child("User");
-        productReference = FirebaseDatabase.getInstance().getReference().child("Product");
-
-        mUser = FirebaseAuth.getInstance().getCurrentUser();
-
-        String userId = mUser.getUid();
-        String productId = productReference.push().getKey();
-
-        productModel.setCropProductID(productId);
-        productModel.setCropName(cropName.getText().toString());
-        productModel.setCropPrice(cropPrice.getText().toString());
-        productModel.setCropQuantity(cropQuantity.getText().toString());
-        productModel.setCropDescription(cropDescription.getText().toString());
-        productModel.setUserKey(userReference.child(mUser.getUid()).getKey());
-        productModel.setCropImage(downloadImageUrl);
-
-        Log.d(TAG, "IMAGE URL: " + downloadImageUrl);
-
-        userReference.child(userId).child("fullName").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String username = dataSnapshot.getValue(String.class);
-                productReference.child(productId).child("fullName").setValue(username);
-                productModel.setFullName(username);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-            }
-        });
-
-        userReference.child(userId).child("number").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                String phoneNumber = dataSnapshot.getValue(String.class);
-                productReference.child(productId).child("number").setValue(phoneNumber);
-                productModel.setNumber(phoneNumber);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-            }
-        });
-
-
-        productReference.child(productId).setValue(productModel).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                Toast.makeText(AddProductActivity.this, "Added product successfully", Toast.LENGTH_SHORT).show();
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {}
-        });
-    }
-
     private void uploadPictureToFirebase() {
         final String TAG = "uploadPictureToFirebase()";
 
@@ -224,7 +166,6 @@ public class AddProductActivity extends AppCompatActivity {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 Toast.makeText(AddProductActivity.this, "Upload success.", Toast.LENGTH_SHORT).show();
-
                 Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
                     @Override
                     public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
@@ -248,6 +189,89 @@ public class AddProductActivity extends AppCompatActivity {
                     }
                 });
             }
+        });
+    }
+
+    private void sendProductToFirebase() {
+        userReference = FirebaseDatabase.getInstance().getReference().child("User");
+        productReference = FirebaseDatabase.getInstance().getReference().child("Product");
+
+        mUser = FirebaseAuth.getInstance().getCurrentUser();
+        String userId = mUser.getUid();
+
+        String productId = productReference.push().getKey();
+
+        productModel.setCropProductID(productId);
+        productModel.setCropName(cropName.getText().toString());
+        productModel.setCropPrice(cropPrice.getText().toString());
+        productModel.setCropQuantity(cropQuantity.getText().toString());
+        productModel.setCropDescription(cropDescription.getText().toString());
+        productModel.setUserKey(userReference.child(mUser.getUid()).getKey());
+        productModel.setCropImage(downloadImageUrl);
+
+        Log.d(TAG, "IMAGE URL: " + downloadImageUrl);
+
+        userReference.child(userId).child("fullName").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                String username = dataSnapshot.getValue(String.class);
+                productReference.child(productId).child("fullName").setValue(username);
+                productModel.setFullName(username);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        }); //Send fullName to product
+
+        userReference.child(userId).child("number").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                String phoneNumber = dataSnapshot.getValue(String.class);
+                productReference.child(productId).child("number").setValue(phoneNumber);
+                productModel.setNumber(phoneNumber);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        }); //Send phone number to product
+
+        userReference.child(userId).child("dealer").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                boolean dealer = dataSnapshot.getValue(boolean.class);
+                productReference.child(productId).child("dealer").setValue(dealer);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        userReference.child(userId).child("farmer").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                boolean farmer = dataSnapshot.getValue(boolean.class);
+                productReference.child(productId).child("farmer").setValue(farmer);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
+        productReference.child(productId).setValue(productModel).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Toast.makeText(AddProductActivity.this, "Added product successfully", Toast.LENGTH_SHORT).show();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {}
         });
     }
 

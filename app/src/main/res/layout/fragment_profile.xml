@@ -18,7 +18,10 @@
             android:layout_height="120dp"
             android:layout_centerHorizontal="true"
             android:src="@drawable/logo" />
+
+
     </RelativeLayout>
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -246,6 +249,6 @@
                 android:text="user_account_type"/>
 
         </LinearLayout>
-    </LinearLayout>
 
+    </LinearLayout>
 </LinearLayout>

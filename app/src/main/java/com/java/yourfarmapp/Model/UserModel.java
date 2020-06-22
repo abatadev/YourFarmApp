@@ -3,6 +3,7 @@ package com.java.yourfarmapp.Model;
 public class UserModel {
 
     private String UID;
+    private String profilePic;
     private String email;
     private String password;
     private String number;
@@ -94,4 +95,14 @@ public class UserModel {
     public void setDealer(boolean dealer) {
         isDealer = dealer;
     }
+
+    public String getProfilePic() {
+        return profilePic;
+    }
+
+    public void setProfilePic(String profilePic) {
+        this.profilePic = profilePic;
+    }
+
+
 }

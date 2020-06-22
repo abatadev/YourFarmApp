@@ -1,6 +1,9 @@
 package com.java.yourfarmapp.ui.profile;
 
+import com.google.android.gms.tasks.Continuation;
 import com.google.firebase.storage.UploadTask;
+import com.java.yourfarmapp.AddProductActivity;
+import com.java.yourfarmapp.UploadProfilePicture;
 import com.squareup.picasso.Picasso;
 import android.app.AlertDialog;
 import android.content.Intent;
@@ -66,10 +69,10 @@ public class ProfileFragment extends Fragment {
     UserModel userModel;
 
     private static final String TAG = "ProfileFragment.java";
-
-    static final int REQUEST_IMAGE_CAPTURE = 1;
-
     private static final String SOURCE = "readUserInformation()";
+
+    private String downloadImageUrl;
+    static final int REQUEST_IMAGE_CAPTURE = 1;
 
     AlertDialog dialog;
 
@@ -86,21 +89,7 @@ public class ProfileFragment extends Fragment {
     private ImageView image_number;
     private ImageView image_account_type;
 
-    private RadioButton dealer;
-    private RadioButton farmer;
-    private RadioGroup radioGroup;
-
-    private Button saveAccountType;
-    private Button buttonFarmer;
-    private Button buttonDealer;
-
-
-    private String currentUserId;
-    private String firebaseDBName;
-
     FirebaseStorage storage;
-    private StorageReference storageReference;
-
     View root = null;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -125,6 +114,7 @@ public class ProfileFragment extends Fragment {
         image_email = root.findViewById(R.id.image_email_icon);
         image_number = root.findViewById(R.id.image_number_icon);
         image_account_type = root.findViewById(R.id.image_account_type_icon);
+        //profilePicImageRef  = FirebaseStorage.getInstance().getReference().child("Images");
 
         fireAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -140,6 +130,15 @@ public class ProfileFragment extends Fragment {
 
 
         readUserInformation();
+        
+        add_profile_image.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //INTENT
+                Intent intent = new Intent(getContext(), UploadProfilePicture.class);
+                startActivity(intent);
+            }
+        });
 
         image_name.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -180,6 +179,7 @@ public class ProfileFragment extends Fragment {
 
         return root;
     }
+
 
     private void readUserInformation() {
         final String TAG = "readUserInformation()";
