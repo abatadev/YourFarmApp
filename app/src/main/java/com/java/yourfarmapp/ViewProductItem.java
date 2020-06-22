@@ -11,11 +11,16 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.java.yourfarmapp.Model.ProductModel;
+import com.java.yourfarmapp.Model.UserModel;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ViewProductItem extends AppCompatActivity {
 
@@ -26,7 +31,7 @@ public class ViewProductItem extends AppCompatActivity {
     TextView farmerPhoneNumber;
 
     ImageView productImage;
-    ImageView farmerProfileImage;
+    CircleImageView farmerProfileImage;
 
     RatingBar productRating;
 
@@ -36,6 +41,7 @@ public class ViewProductItem extends AppCompatActivity {
 
     FirebaseDatabase userReference;
     FirebaseDatabase productReference;
+    FirebaseUser mUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +92,9 @@ public class ViewProductItem extends AppCompatActivity {
     }
 
     private void getProductDetails(String productId) {
+        mUser = FirebaseAuth.getInstance().getCurrentUser();
+        String userId = mUser.getUid();
+
         FirebaseDatabase.getInstance().getReference().child("Product").child(productId)
         .addValueEventListener(new ValueEventListener() {
             @Override
@@ -95,8 +104,8 @@ public class ViewProductItem extends AppCompatActivity {
 
 
                     productName.setText(productModel.getCropName());
-                    productDescription.setText(productModel.getCropDescription());
-                    productPrice.setText(productModel.getCropPrice());
+                    productDescription.setText("Description: " + productModel.getCropDescription());
+                    productPrice.setText("$: " + productModel.getCropPrice());
 
                     //Rating Bar
                     farmerName.setText(productModel.getFullName());
@@ -108,10 +117,25 @@ public class ViewProductItem extends AppCompatActivity {
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
             }
         });
 
+        FirebaseDatabase.getInstance().getReference().child("User").child(userId)
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if(dataSnapshot.exists()) {
+                            UserModel userModel = dataSnapshot.getValue(UserModel.class);
+
+                            Glide.with(getApplicationContext()).load(userModel.getProfilePic()).into(farmerProfileImage);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
 
 
     }

@@ -274,26 +274,4 @@ public class AddProductActivity extends AppCompatActivity {
             public void onFailure(@NonNull Exception e) {}
         });
     }
-
-
-
-//    private void generateCategories() {
-//        //Only call this method to regenerate category tables
-//
-//        productReferenceToSpinner = FirebaseDatabase.getInstance().getReference().child("Category");
-//        Map<String, CategoryModel> categoryModelHashMap = new HashMap<>();
-//
-//        categoryModelHashMap.put("1", new CategoryModel("001" , "Livestock",
-//                "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/20150728_xl_P1000804_Leck_mich_Zaertlichkeit_der_Rinder.JPG/220px-20150728_xl_P1000804_Leck_mich_Zaertlichkeit_der_Rinder.JPG\""));
-//        categoryModelHashMap.put("2", new CategoryModel("002", "Vegetables",
-//                "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/20150728_xl_P1000804_Leck_mich_Zaertlichkeit_der_Rinder.JPG/220px-20150728_xl_P1000804_Leck_mich_Zaertlichkeit_der_Rinder.JPG"));
-//        categoryModelHashMap.put("3", new CategoryModel("003", "Rice",
-//                "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/20150728_xl_P1000804_Leck_mich_Zaertlichkeit_der_Rinder.JPG/220px-20150728_xl_P1000804_Leck_mich_Zaertlichkeit_der_Rinder.JPG"));
-//        categoryModelHashMap.put("4", new CategoryModel("004", "Fruit",
-//                "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/20150728_xl_P1000804_Leck_mich_Zaertlichkeit_der_Rinder.JPG/220px-20150728_xl_P1000804_Leck_mich_Zaertlichkeit_der_Rinder.JPG"));
-//        categoryModelHashMap.put("5", new CategoryModel("005", "Others",
-//                "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/20150728_xl_P1000804_Leck_mich_Zaertlichkeit_der_Rinder.JPG/220px-20150728_xl_P1000804_Leck_mich_Zaertlichkeit_der_Rinder.JPG"));
-//
-//        productReferenceToSpinner.setValue(categoryModelHashMap);
-//    }
 }

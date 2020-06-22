@@ -35,6 +35,8 @@ import com.java.yourfarmapp.Model.UserModel;
 
 import java.util.UUID;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class UploadProfilePicture extends AppCompatActivity {
     private FirebaseAuth.AuthStateListener fireAuthListener;
     FirebaseUser currentUser;
@@ -46,7 +48,7 @@ public class UploadProfilePicture extends AppCompatActivity {
     FirebaseUser mUser;
 
     private Button uploadButton;
-    private ImageView profilePicHolder;
+    private CircleImageView profilePicHolder;
 
     private Uri imageUri = null;
 
@@ -150,6 +152,12 @@ public class UploadProfilePicture extends AppCompatActivity {
                           Log.d("Error Debug", "TO DO");
                         }
                     }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(UploadProfilePicture.this, "Failed", Toast.LENGTH_SHORT).show();
+                        Log.d("onFailure", "Error: " + e);
+                    }
                 });
             }
         });
@@ -157,6 +165,7 @@ public class UploadProfilePicture extends AppCompatActivity {
 
     private void sendToFirebase() {
         final String TAG = "sendToFirebase()";
+        userReference = FirebaseDatabase.getInstance().getReference().child("User");
 
         mUser = FirebaseAuth.getInstance().getCurrentUser();
         String userId = mUser.getUid();
