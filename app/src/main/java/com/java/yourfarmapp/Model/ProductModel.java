@@ -5,26 +5,28 @@ import java.util.List;
 public class ProductModel {
     private String cropProductID;
     private String cropName;
-    private String cropPrice;
     private String cropDescription;
+    private String cropPrice;
     private String cropImage;
     private String cropQuantity;
     private String cropQuantityType;
 
-    private String userName;
     private String userKey;
-    private String userPhoneNumber;
+    private String fullName;
+    private String number;
 
     List<UserModel> users;
 
     public ProductModel() {
     }
 
-    public ProductModel(String cropQuantityType) {
-        this.cropQuantityType = cropQuantity;
+    public ProductModel(String cropProductID, String cropName, String cropDescription) {
+        this.cropProductID = cropProductID;
+        this.cropName = cropName;
+        this.cropDescription = cropDescription;
     }
 
-    public String getCropProductID(String key) {
+    public String getCropProductID() {
         return cropProductID;
     }
 
@@ -40,12 +42,28 @@ public class ProductModel {
         this.cropName = cropName;
     }
 
+    public String getCropDescription() {
+        return cropDescription;
+    }
+
+    public void setCropDescription(String cropDescription) {
+        this.cropDescription = cropDescription;
+    }
+
     public String getCropPrice() {
         return cropPrice;
     }
 
     public void setCropPrice(String cropPrice) {
         this.cropPrice = cropPrice;
+    }
+
+    public String getCropImage() {
+        return cropImage;
+    }
+
+    public void setCropImage(String cropImage) {
+        this.cropImage = cropImage;
     }
 
     public String getCropQuantity() {
@@ -64,48 +82,27 @@ public class ProductModel {
         this.cropQuantityType = cropQuantityType;
     }
 
-    public String getCropDescription() {
-        return cropDescription;
-    }
-
-    public void setCropDescription(String cropDescription) {
-        this.cropDescription = cropDescription;
-    }
-
-    public String getCropImage() {
-        return cropImage;
-    }
-
-    public void setCropImage(String cropImage) {
-        this.cropImage = cropImage;
-    }
-
-    public String getCropProductID() {
-        return cropProductID;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
     public String getUserKey() {
         return userKey;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
     }
 
     public void setUserKey(String userKey) {
         this.userKey = userKey;
     }
 
-    public String getUserPhoneNumber() {
-        return userPhoneNumber;
+    public String getFullName() {
+        return fullName;
     }
 
-    public void setUserPhoneNumber(String userPhoneNumber) {
-        this.userPhoneNumber = userPhoneNumber;
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
+    public String getNumber() {
+        return number;
+    }
+
+    public void setNumber(String number) {
+        this.number = number;
+    }
 }

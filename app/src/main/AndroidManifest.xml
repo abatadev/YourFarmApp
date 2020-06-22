@@ -12,7 +12,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
+        <activity android:name=".ViewProductItem"></activity>
         <activity
             android:name=".SignInActivity"
             android:label="@string/title_activity_shop"
@@ -23,12 +23,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity android:name=".SignUpActivity" />
         <activity android:name=".MainActivity" />
         <activity android:name=".HomeActivity" />
-        <activity android:name=".AddProductActivity"/>
-
+        <activity android:name=".AddProductActivity" />
     </application>
 
 </manifest>
