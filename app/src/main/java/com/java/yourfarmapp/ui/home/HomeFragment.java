@@ -1,21 +1,35 @@
 package com.java.yourfarmapp.ui.home;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.java.yourfarmapp.Model.CategoryModel;
+import com.java.yourfarmapp.Model.ProductModel;
 import com.java.yourfarmapp.R;
+import com.java.yourfarmapp.ui.product.ProductFragment;
+import com.squareup.picasso.Picasso;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,43 +37,103 @@ import java.util.Map;
 public class HomeFragment extends Fragment {
 
     private HomeViewModel homeViewModel;
+    private CategoryModel categoryModel;
 
-    DatabaseReference categoriesRef;
+    private RecyclerView recyclerView;
+
+    private DatabaseReference categoriesRef;
+    private DatabaseReference categoryQuery;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         homeViewModel =
                 ViewModelProviders.of(this).get(HomeViewModel.class);
         View root = inflater.inflate(R.layout.fragment_home, container, false);
-        final TextView textView = root.findViewById(R.id.text_home);
-        homeViewModel.getText().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
 
-        generateCategories();
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        linearLayoutManager.setReverseLayout(true);
+        linearLayoutManager.setStackFromEnd(true);
+
+        recyclerView = (RecyclerView) root.findViewById(R.id.category_list);
+        recyclerView.setLayoutManager(linearLayoutManager);
+
+        categoriesRef = FirebaseDatabase.getInstance().getReference().child("Category");
+
+        displayCategories();
+
         return root;
     }
 
-    private void generateCategories() {
-        //Only call this method to regenerate category tables
+    private void displayCategories() {
+        Query query = categoriesRef;
 
-        categoriesRef = FirebaseDatabase.getInstance().getReference().child("Category");
-        Map<String, CategoryModel> categoryModelHashMap = new HashMap<>();
+        FirebaseRecyclerOptions<CategoryModel> options = new FirebaseRecyclerOptions.Builder<CategoryModel>()
+                .setQuery(query, CategoryModel.class)
+                .build();
 
-        categoryModelHashMap.put("1", new CategoryModel("001" , "Livestock",
-                "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/20150728_xl_P1000804_Leck_mich_Zaertlichkeit_der_Rinder.JPG/220px-20150728_xl_P1000804_Leck_mich_Zaertlichkeit_der_Rinder.JPG\""));
-        categoryModelHashMap.put("2", new CategoryModel("002", "Vegetables",
-                "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/20150728_xl_P1000804_Leck_mich_Zaertlichkeit_der_Rinder.JPG/220px-20150728_xl_P1000804_Leck_mich_Zaertlichkeit_der_Rinder.JPG"));
-        categoryModelHashMap.put("3", new CategoryModel("003", "Rice",
-                "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/20150728_xl_P1000804_Leck_mich_Zaertlichkeit_der_Rinder.JPG/220px-20150728_xl_P1000804_Leck_mich_Zaertlichkeit_der_Rinder.JPG"));
-        categoryModelHashMap.put("4", new CategoryModel("004", "Fruit",
-                "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/20150728_xl_P1000804_Leck_mich_Zaertlichkeit_der_Rinder.JPG/220px-20150728_xl_P1000804_Leck_mich_Zaertlichkeit_der_Rinder.JPG"));
-        categoryModelHashMap.put("5", new CategoryModel("005", "Others",
-                "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/20150728_xl_P1000804_Leck_mich_Zaertlichkeit_der_Rinder.JPG/220px-20150728_xl_P1000804_Leck_mich_Zaertlichkeit_der_Rinder.JPG"));
+        FirebaseRecyclerAdapter adapter = new FirebaseRecyclerAdapter<CategoryModel, HomeViewHolder>(options) {
+            @NonNull
+            @Override
+            public HomeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_category, parent, false);
+                return new HomeViewHolder(view);
+            }
 
-        categoriesRef.setValue(categoryModelHashMap);
+            @Override
+            protected void onBindViewHolder(@NonNull HomeViewHolder homeViewHolder, int position, @NonNull CategoryModel categoryModel) {
+                final String categoryId = getRef(position).getKey(); // Note
+                Log.d("onBindViewHolder", "Category ID: " + categoryId);
+
+                categoriesRef.child(categoryId).addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if(dataSnapshot.exists()) {
+                            final String categoryNametoString =  dataSnapshot.child("categoryName").getValue().toString();
+                            final String categoryImageToString = dataSnapshot.child("categoryImage").getValue().toString();
+
+                            homeViewHolder.setCategoryName(categoryNametoString);
+                            homeViewHolder.setCategoryImage(categoryImageToString);
+
+                        } else {
+                            Toast.makeText(getContext(), "Unable to find categories.", Toast.LENGTH_SHORT).show();
+                            Log.d("adapter", "Does not exist");
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
+                //Set OnClick Listener
+            }
+
+
+        };
+
+        adapter.startListening();
+        recyclerView.setAdapter(adapter);
     }
+
+    public static class HomeViewHolder extends RecyclerView.ViewHolder {
+        View mView;
+        ImageView categoryImage;
+
+        public HomeViewHolder(@NonNull View itemView) {
+            super(itemView);
+            mView = itemView;
+        }
+
+        public void setCategoryName(String name) {
+            TextView categoryName = mView.findViewById(R.id.category_name);
+            categoryName.setText(name);
+        }
+
+        public void setCategoryImage(String image) {
+            ImageView categoryImage = mView.findViewById(R.id.category_image);
+            Picasso.get().load(image).fit().into(categoryImage);
+        }
+    }
+
 }

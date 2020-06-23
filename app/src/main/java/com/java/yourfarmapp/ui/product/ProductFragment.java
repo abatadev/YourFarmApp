@@ -70,8 +70,8 @@ public class ProductFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_product, container, false);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        linearLayoutManager.setReverseLayout(true);
-        linearLayoutManager.setStackFromEnd(true);
+        linearLayoutManager.setReverseLayout(false);
+        linearLayoutManager.setStackFromEnd(false);
 
         productImage = root.findViewById(R.id.crop_image_mini);
 
@@ -89,7 +89,6 @@ public class ProductFragment extends Fragment {
 
         dbProduct = FirebaseDatabase.getInstance().getReference("Product");
         userRef = FirebaseDatabase.getInstance().getReference("User");
-
 
         displayProducts();
 
