@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,6 +44,8 @@ public class HomeFragment extends Fragment {
 
     private DatabaseReference categoriesRef;
     private DatabaseReference categoryQuery;
+    
+    private RelativeLayout layoutTest;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -51,8 +54,8 @@ public class HomeFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_home, container, false);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        linearLayoutManager.setReverseLayout(true);
-        linearLayoutManager.setStackFromEnd(true);
+        linearLayoutManager.setReverseLayout(false);
+        linearLayoutManager.setStackFromEnd(false);
 
         recyclerView = (RecyclerView) root.findViewById(R.id.category_list);
         recyclerView.setLayoutManager(linearLayoutManager);
@@ -93,7 +96,14 @@ public class HomeFragment extends Fragment {
 
                             homeViewHolder.setCategoryName(categoryNametoString);
                             homeViewHolder.setCategoryImage(categoryImageToString);
-
+                            
+                            homeViewHolder.mView.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    Toast.makeText(getContext(), "TEST", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                            
                         } else {
                             Toast.makeText(getContext(), "Unable to find categories.", Toast.LENGTH_SHORT).show();
                             Log.d("adapter", "Does not exist");
@@ -105,10 +115,8 @@ public class HomeFragment extends Fragment {
 
                     }
                 });
-
-                //Set OnClick Listener
+                
             }
-
 
         };
 

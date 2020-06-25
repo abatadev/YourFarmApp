@@ -56,6 +56,7 @@ public class HomeActivity extends AppCompatActivity implements   NavigationView.
         setContentView(R.layout.activity_shop);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         FloatingActionButton messagesFloatingButton = findViewById(R.id.fab);
         messagesFloatingButton.setOnClickListener(new View.OnClickListener() {
@@ -66,9 +67,9 @@ public class HomeActivity extends AppCompatActivity implements   NavigationView.
             }
         });
 
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
-        View headerView = navigationView.getHeaderView(0);
+        //View headerView = navigationView.getHeaderView(0);
 
         mAppBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.nav_home, R.id.nav_product, R.id.nav_profile, R.id.nav_settings)
@@ -92,6 +93,7 @@ public class HomeActivity extends AppCompatActivity implements   NavigationView.
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         menuItem.setChecked(true);
+        drawer.closeDrawers();
         switch(menuItem.getItemId()) {
             case R.id.nav_home:
                 if(menuItem.getItemId() != menuClick) {
@@ -105,16 +107,39 @@ public class HomeActivity extends AppCompatActivity implements   NavigationView.
                     navController.navigate(R.id.nav_product);
                 }
                 break;
+            case R.id.nav_dealer:
+                if(menuItem.getItemId() != menuClick) {
+                    navController.popBackStack();
+                    navController.navigate(R.id.nav_dealer);
+                }
+                break;
+            case R.id.nav_farmer:
+                if(menuItem.getItemId() != menuClick) {
+                    navController.popBackStack();
+                    navController.navigate(R.id.nav_farmer);
+                }
+                break;
             case R.id.nav_profile:
                 if(menuItem.getItemId() != menuClick) {
                     navController.popBackStack();
                     navController.navigate(R.id.nav_profile);
                 }
                 break;
+            case R.id.nav_orders:
+                if(menuItem.getItemId() != menuClick) {
+                    navController.popBackStack();
+                    navController.navigate(R.id.nav_orders);
+                }
+                break;
+            case R.id.nav_settings:
+                if(menuItem.getItemId() != menuClick) {
+                    navController.popBackStack();
+                    navController.navigate(R.id.nav_settings);
+                }
+                break;
 
             case R.id.sign_out:
                 signOut();
-
                 break;
 
             default:

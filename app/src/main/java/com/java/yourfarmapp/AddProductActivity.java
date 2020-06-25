@@ -55,6 +55,8 @@ public class AddProductActivity extends AppCompatActivity {
 
     DatabaseReference productReference;
     DatabaseReference userReference;
+    DatabaseReference categoryReference;
+
     StorageReference productImagesRef;
 
     FirebaseUser mUser;
@@ -193,6 +195,7 @@ public class AddProductActivity extends AppCompatActivity {
     }
 
     private void sendProductToFirebase() {
+        categoryReference = FirebaseDatabase.getInstance().getReference().child("Category");
         userReference = FirebaseDatabase.getInstance().getReference().child("User");
         productReference = FirebaseDatabase.getInstance().getReference().child("Product");
 
@@ -200,6 +203,7 @@ public class AddProductActivity extends AppCompatActivity {
         String userId = mUser.getUid();
 
         String productId = productReference.push().getKey();
+        String categoryId = categoryReference.getKey();
 
         productModel.setCropProductID(productId);
         productModel.setCropName(cropName.getText().toString());
@@ -264,7 +268,7 @@ public class AddProductActivity extends AppCompatActivity {
         });
 
 
-        productReference.child(productId).setValue(productModel).addOnSuccessListener(new OnSuccessListener<Void>() {
+        categoryReference.child("Category").child(categoryId).child(productId).setValue(productModel).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
                 Toast.makeText(AddProductActivity.this, "Added product successfully", Toast.LENGTH_SHORT).show();
