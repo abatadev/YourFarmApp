@@ -91,10 +91,10 @@ public class HomeFragment extends Fragment {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         if(dataSnapshot.exists()) {
-                            final String categoryNametoString =  dataSnapshot.child("categoryName").getValue().toString();
+                            final String categoryNameToString =  dataSnapshot.child("categoryName").getValue().toString();
                             final String categoryImageToString = dataSnapshot.child("categoryImage").getValue().toString();
 
-                            homeViewHolder.setCategoryName(categoryNametoString);
+                            homeViewHolder.setCategoryName(categoryNameToString);
                             homeViewHolder.setCategoryImage(categoryImageToString);
                             
                             homeViewHolder.mView.setOnClickListener(new View.OnClickListener() {

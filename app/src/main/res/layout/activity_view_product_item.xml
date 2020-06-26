@@ -118,25 +118,28 @@
         android:orientation="horizontal"
         android:layout_gravity="center_horizontal">
 
-        <com.google.android.material.button.MaterialButton
+        <Button
             android:id="@+id/call_farmer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:drawableLeft="@drawable/ic_call_black_24dp"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
             android:text="Call"/>
 
-        <com.google.android.material.button.MaterialButton
+        <Button
             android:id="@+id/text_farmer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:drawableLeft="@drawable/bt_ic_sms_code"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
             android:text="Text"/>
 
-        <com.google.android.material.button.MaterialButton
+        <Button
             android:id="@+id/chat_farmer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:drawableLeft="@drawable/ic_chat_bubble_black_24dp"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
             android:text="Chat"/>
 
     </LinearLayout>

@@ -15,6 +15,8 @@ public class ProductModel {
     private String fullName;
     private String number;
 
+    private String farmerProfilePic;
+
     List<UserModel> users;
 
     public ProductModel() {
@@ -104,5 +106,13 @@ public class ProductModel {
 
     public void setNumber(String number) {
         this.number = number;
+    }
+
+    public String getFarmerProfilePic() {
+        return farmerProfilePic;
+    }
+
+    public void setFarmerProfilePic(String farmerProfilePic) {
+        this.farmerProfilePic = farmerProfilePic;
     }
 }

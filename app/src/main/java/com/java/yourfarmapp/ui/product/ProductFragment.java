@@ -129,7 +129,7 @@ public class ProductFragment extends Fragment {
                             productViewHolder.setProductPrice("Price: " + productPrice);
                             productViewHolder.setCropPicture(productImageString);
 
-                            productViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                            productViewHolder.mView.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
                                     Log.d(TAG, "Product ID: " + cropProductId);

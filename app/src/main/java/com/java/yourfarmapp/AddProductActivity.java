@@ -238,6 +238,7 @@ public class AddProductActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
+
             }
         }); //Send phone number to product
 
@@ -267,8 +268,20 @@ public class AddProductActivity extends AppCompatActivity {
             }
         });
 
+        userReference.child(userId).child("profilePic").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                String profilePicture = dataSnapshot.getValue(String.class);
+                productReference.child(productId).child("farmerProfilePic").setValue(profilePicture);
+            }
 
-        categoryReference.child("Category").child(categoryId).child(productId).setValue(productModel).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        productReference.child(productId).setValue(productModel).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
                 Toast.makeText(AddProductActivity.this, "Added product successfully", Toast.LENGTH_SHORT).show();

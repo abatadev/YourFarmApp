@@ -3,18 +3,22 @@ package com.java.yourfarmapp;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.java.yourfarmapp.Model.ProductModel;
@@ -39,9 +43,11 @@ public class ViewProductItem extends AppCompatActivity {
     Button textFarmer;
     Button chatFarmer;
 
-    FirebaseDatabase userReference;
+    DatabaseReference userReference;
     FirebaseDatabase productReference;
     FirebaseUser mUser;
+
+    UserModel userModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,31 +70,57 @@ public class ViewProductItem extends AppCompatActivity {
         textFarmer = findViewById(R.id.text_farmer);
         chatFarmer = findViewById(R.id.chat_farmer);
 
-        String cropProductId = getIntent().getStringExtra("cropProductId");
+        mUser = FirebaseAuth.getInstance().getCurrentUser();
+        String cropProductId;
+        String userId = mUser.getUid();
+        cropProductId = getIntent().getExtras().get("cropProductId").toString();
 
-        callFarmer.setOnClickListener(new View.OnClickListener() {
+        FirebaseDatabase.getInstance().getReference().child("Product").child(cropProductId)
+                .addValueEventListener(new ValueEventListener() {
             @Override
-            public void onClick(View view) {
-                startCallFarmer();
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()) {
+                    ProductModel productModel = dataSnapshot.getValue(ProductModel.class);
+
+                    callFarmer.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            startCallFarmer();
+                        }
+                    });
+
+                    textFarmer.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            startTextFarmer();
+                        }
+                    });
+
+                    chatFarmer.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Intent chatIntent = new Intent(ViewProductItem.this, ChatActivity.class);
+                            chatIntent.putExtra("farmerId", productModel.getUserKey());
+                            chatIntent.putExtra("farmerName", productModel.getFullName());
+                            chatIntent.putExtra("productId", productModel.getCropProductID());
+                            chatIntent.putExtra("farmerProfilePictureCircle", productModel.getFarmerProfilePic());
+                            startActivity(chatIntent);
+                        }
+                    });
+
+                } else {
+                    Toast.makeText(ViewProductItem.this, "Unable to get user details.", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
             }
         });
 
-        textFarmer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startTextFarmer();
-            }
-        });
-
-        chatFarmer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startChatFarmer();
-            }
-        });
-        
+        //String cropProductId = getIntent().getStringExtra("cropProductId");
         getProductDetails(cropProductId);
-
     }
 
     private void getProductDetails(String productId) {
@@ -140,11 +172,9 @@ public class ViewProductItem extends AppCompatActivity {
 
     }
 
-    private void loadProduct(ProductModel productModel) {
-
-    }
 
     private void startCallFarmer() {
+
     }
 
     private void startTextFarmer() {
