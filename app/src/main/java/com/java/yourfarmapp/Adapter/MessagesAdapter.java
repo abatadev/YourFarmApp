@@ -1,11 +1,13 @@
 package com.java.yourfarmapp.Adapter;
 
 import android.graphics.Color;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -74,6 +76,8 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.Messag
                     String image = dataSnapshot.child("profilePic").getValue().toString();
                     Picasso.get().load(image).fit().placeholder(R.drawable.profile_picture)
                             .into(holder.receiverProfileImage);
+                } else {
+
                 }
             }
 

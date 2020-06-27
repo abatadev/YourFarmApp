@@ -27,9 +27,16 @@
             <EditText
                 android:id="@+id/email_address_input"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="60dp"
                 android:hint="Email Address"
-                android:inputType="textEmailAddress"/>
+                android:background="@drawable/custom_input"
+                android:inputType="textEmailAddress"
+                android:textSize="14sp"
+                android:ems="10"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+
+                android:drawableStart="@drawable/ic_email_black_24dp"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -42,7 +49,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/password"
-                android:inputType="textPassword"/>
+                android:background="@drawable/custom_input"
+                android:inputType="textPassword"
+                android:ems="10"
+                android:textSize="14sp"
+                android:drawableStart="@drawable/ic_lock_black_24dp"/>
         </com.google.android.material.textfield.TextInputLayout>
         
         <!--Buttons-->

@@ -25,6 +25,7 @@ import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -61,8 +62,12 @@ public class ChatActivity extends AppCompatActivity {
     private String messageSenderId;
     private String farmerProfilePic;
 
+    private String nameOfSender, nameOfReceiver;
+
     private TextView receiverName;
     private CircleImageView receiverProfileImage;
+
+    FirebaseUser mUser;
 
     DatabaseReference rootRef;
     DatabaseReference userRef;
@@ -74,8 +79,10 @@ public class ChatActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
+        rootRef = FirebaseDatabase.getInstance().getReference();
+
         mAuth = FirebaseAuth.getInstance();
-        messageSenderId = mAuth.getCurrentUser().getUid().toString();
+        messageSenderId = getIntent().getExtras().get("dealerId").toString();
         messageReceiverID = getIntent().getExtras().get("farmerId").toString();
 
         initializeFields();
@@ -92,9 +99,6 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     private void fetchMessages() {
-        rootRef = FirebaseDatabase.getInstance().getReference();
-        messageSenderId = mAuth.getCurrentUser().getUid().toString();
-        messageReceiverID = getIntent().getExtras().get("farmerId").toString();
 
         rootRef.child("Messages")
                 .child(messageSenderId)
@@ -103,8 +107,8 @@ public class ChatActivity extends AppCompatActivity {
                     @Override
                     public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
                         if(dataSnapshot.exists()) {
-                            MessagesModel message = dataSnapshot.getValue(MessagesModel.class);
-                            messagesModelList.add(message);
+                            MessagesModel messagesModel = dataSnapshot.getValue(MessagesModel.class);
+                            messagesModelList.add(messagesModel);
                             messagesAdapter.notifyDataSetChanged();
                         } else {
                             Toast.makeText(ChatActivity.this, "No existing chat.", Toast.LENGTH_SHORT).show();
@@ -136,9 +140,13 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     private void sendMessage() {
+
         rootRef = FirebaseDatabase.getInstance().getReference();
         messageReceiverID = getIntent().getExtras().get("farmerId").toString();
         messageSenderId = mAuth.getCurrentUser().getUid().toString();
+
+        nameOfSender = FirebaseDatabase.getInstance().getReference()
+                .child("User").child(messageSenderId).child("fullName").toString();
 
         String messageText = userMessageInput.getText().toString();
 
@@ -164,17 +172,21 @@ public class ChatActivity extends AppCompatActivity {
             String saveCurrentTime = currentTime.format(calendarForTime.getTime());
 
 
+
+
             Map messageTextBody = new HashMap();
-            messageTextBody.put("message", messageText);
-            messageTextBody.put("time", saveCurrentTime); // TO DO
-            messageTextBody.put("date", saveCurrentDate); // TO DO
-            messageTextBody.put("from", messageSenderId);
-            messageTextBody.put("type", "text");
-            messageTextBody.put("to", messageReceiverID);
+                messageTextBody.put("message", messageText);
+                messageTextBody.put("time", saveCurrentTime); // TO DO
+                messageTextBody.put("date", saveCurrentDate); // TO DO
+                messageTextBody.put("from", messageSenderId);
+                messageTextBody.put("fromName", nameOfSender);
+                messageTextBody.put("type", "text");
+                messageTextBody.put("to", messageReceiverID);
+                messageTextBody.put("toName", messageReceiverName);
 
             Map messageBodyDetails = new HashMap();
-            messageBodyDetails.put(messageSenderReference + "/" + message_push_id , messageTextBody);
-            messageBodyDetails.put(messageReceiverReference + "/" + message_push_id , messageTextBody);
+                messageBodyDetails.put(messageSenderReference + "/" + message_push_id , messageTextBody);
+                messageBodyDetails.put(messageReceiverReference + "/" + message_push_id , messageTextBody);
 
             rootRef.updateChildren(messageBodyDetails).addOnCompleteListener(new OnCompleteListener() {
                 @Override
@@ -183,8 +195,8 @@ public class ChatActivity extends AppCompatActivity {
                         Toast.makeText(ChatActivity.this, "Sent", Toast.LENGTH_SHORT).show();
                         userMessageInput.setText("");
                     } else {
-                        String message = task.getException().getMessage();
-                        Toast.makeText(ChatActivity.this, message, Toast.LENGTH_SHORT).show();
+                        String messages = task.getException().getMessage();
+                        Toast.makeText(ChatActivity.this, messages, Toast.LENGTH_SHORT).show();
                         userMessageInput.setText("");
                     }
 
@@ -205,10 +217,10 @@ public class ChatActivity extends AppCompatActivity {
         receiverName.setText(messageReceiverName);
         Glide.with(getApplicationContext()).load(farmerProfilePic).into(receiverProfileImage);
 
-        Log.d("TAGS", "Farmer ID: " + messageReceiverID);
-        Log.d("TAGS", "Farmer Name: " + messageReceiverName);
-        Log.d("TAGS", "Crop Product ID: " + productId);
-        Log.d("TAGS", "Farmer Profile Pic URL: " + farmerProfilePic);
+        Log.d(TAGS, "Farmer ID: " + messageReceiverID);
+        Log.d(TAGS, "Farmer Name: " + messageReceiverName);
+        Log.d(TAGS, "Crop Product ID: " + productId);
+        Log.d(TAGS, "Farmer Profile Pic URL: " + farmerProfilePic);
 
 
         FirebaseDatabase.getInstance().getReference().child("Product").child(productId)

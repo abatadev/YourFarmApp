@@ -4,16 +4,19 @@ import java.util.Date;
 
 public class MessagesModel {
     private String data, time, type, message, from;
+    private String fromName, toName;
 
     public MessagesModel() {
     }
 
-    public MessagesModel(String data, String time, String type, String message, String from) {
+    public MessagesModel(String data, String time, String type, String message, String from, String fromName, String toName) {
         this.data = data;
         this.time = time;
         this.type = type;
         this.message = message;
         this.from = from;
+        this.fromName = fromName;
+        this.toName = toName;
     }
 
     public String getData() {
@@ -54,5 +57,21 @@ public class MessagesModel {
 
     public void setFrom(String from) {
         this.from = from;
+    }
+
+    public String getFromName() {
+        return fromName;
+    }
+
+    public void setFromName(String fromName) {
+        this.fromName = fromName;
+    }
+
+    public String getToName() {
+        return toName;
+    }
+
+    public void setToName(String toName) {
+        this.toName = toName;
     }
 }
