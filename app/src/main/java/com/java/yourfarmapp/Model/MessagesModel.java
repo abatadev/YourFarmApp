@@ -3,36 +3,41 @@ package com.java.yourfarmapp.Model;
 import java.util.Date;
 
 public class MessagesModel {
-    private String toReciever, toSender;
-    private String message;
-    private String date;
-    private String time;
+    private String data, time, type, message, from;
 
     public MessagesModel() {
     }
 
-    public MessagesModel(String toReciever, String toSender, String message, String date, String time) {
-        this.toReciever = toReciever;
-        this.toSender = toSender;
+    public MessagesModel(String data, String time, String type, String message, String from) {
+        this.data = data;
+        this.time = time;
+        this.type = type;
         this.message = message;
-        this.date = date;
+        this.from = from;
+    }
+
+    public String getData() {
+        return data;
+    }
+
+    public void setData(String data) {
+        this.data = data;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
         this.time = time;
     }
 
-    public String getToReciever() {
-        return toReciever;
+    public String getType() {
+        return type;
     }
 
-    public void setToReciever(String toReciever) {
-        this.toReciever = toReciever;
-    }
-
-    public String getToSender() {
-        return toSender;
-    }
-
-    public void setToSender(String toSender) {
-        this.toSender = toSender;
+    public void setType(String type) {
+        this.type = type;
     }
 
     public String getMessage() {
@@ -43,19 +48,11 @@ public class MessagesModel {
         this.message = message;
     }
 
-    public String getDate() {
-        return date;
+    public String getFrom() {
+        return from;
     }
 
-    public void setDate(String date) {
-        this.date = date;
-    }
-
-    public String getTime() {
-        return time;
-    }
-
-    public void setTime(String time) {
-        this.time = time;
+    public void setFrom(String from) {
+        this.from = from;
     }
 }

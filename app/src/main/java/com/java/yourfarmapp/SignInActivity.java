@@ -97,6 +97,7 @@ public class SignInActivity extends AppCompatActivity {
                                         passwordInput.setError(getString(R.string.minimum_password));
                                     } else {
                                         Toast.makeText(SignInActivity.this, getString(R.string.auth_failed), Toast.LENGTH_LONG).show();
+                                        Log.d("Error Password", "Error unknown" );
                                     }
                                 } else {
                                     Intent intent = new Intent(SignInActivity.this, HomeActivity.class);

@@ -4,5 +4,7 @@
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
     <color name="colorBlack">#191919</color>
-    <color name="colorWhite">#ffffff</color>
+    <color name="colorWhite">#D7D7D7</color>
+    <color name="senderColor">#F3B1B1</color>
+    <color name="receiverColor">#ACF6FF</color>
 </resources>

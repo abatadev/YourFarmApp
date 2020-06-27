@@ -40,7 +40,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/messages_list_users"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_above="@+id/linear_layout"
         android:layout_below="@id/farmer_information"
         android:layout_centerHorizontal="true"/>
@@ -62,7 +62,7 @@
 
         <EditText
             android:id="@+id/send_message"
-            android:layout_width="300dp"
+            android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:hint="Send message."/>
 
