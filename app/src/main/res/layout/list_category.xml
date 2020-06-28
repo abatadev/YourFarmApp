@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/colorBlack">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
@@ -13,7 +14,8 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp">
+        android:layout_marginTop="8dp"
+        app:cardCornerRadius="16dp">
 
         <RelativeLayout
             android:id="@+id/layout_test"
@@ -42,7 +44,7 @@
                     android:textSize="24sp"
                     android:textStyle="bold"
                     android:layout_marginBottom="8dp"
-                    android:layout_marginLeft="8dp"
+                    android:layout_marginLeft="12dp"
                     android:layout_gravity="bottom"
                     android:textAllCaps="true"
                     android:textColor="@color/colorWhite"

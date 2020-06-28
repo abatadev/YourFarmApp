@@ -23,6 +23,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.java.yourfarmapp.Model.ProductModel;
 import com.java.yourfarmapp.Model.UserModel;
+import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -145,7 +146,8 @@ public class ViewProductItem extends AppCompatActivity {
                     farmerPhoneNumber.setText(productModel.getNumber());
 
                     //Image Views
-                    Glide.with(getApplicationContext()).load(productModel.getCropImage()).into(productImage);
+                    //Glide.with(getApplicationContext()).load(productModel.getCropImage()).into(productImage);
+                    Picasso.get().load(productModel.getCropImage()).fit().into(productImage);
                 }
             }
             @Override
@@ -160,7 +162,8 @@ public class ViewProductItem extends AppCompatActivity {
                         if(dataSnapshot.exists()) {
                             UserModel userModel = dataSnapshot.getValue(UserModel.class);
 
-                            Glide.with(getApplicationContext()).load(userModel.getProfilePic()).into(farmerProfileImage);
+                            //Glide.with(getApplicationContext()).load(userModel.getProfilePic()).into(farmerProfileImage);
+                            Picasso.get().load(userModel.getProfilePic()).fit().into(farmerProfileImage);
                         }
                     }
 

@@ -70,8 +70,8 @@ public class ProductFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_product, container, false);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        linearLayoutManager.setReverseLayout(false);
-        linearLayoutManager.setStackFromEnd(false);
+        linearLayoutManager.setReverseLayout(true);
+        linearLayoutManager.setStackFromEnd(true);
 
         productImage = root.findViewById(R.id.crop_image_mini);
 
@@ -125,7 +125,7 @@ public class ProductFragment extends Fragment {
 
                             //View holder to set name
                             productViewHolder.setProductName(productTitle);
-                            productViewHolder.setProductDescription("Description: " + productDescription);
+                            productViewHolder.setProductDescription(productDescription);
                             productViewHolder.setProductPrice("Price: " + productPrice);
                             productViewHolder.setCropPicture(productImageString);
 
@@ -193,7 +193,7 @@ public class ProductFragment extends Fragment {
 
         public void setCropPicture(String picture) {
             ImageView productPicture = mView.findViewById(R.id.crop_image_mini);
-            Picasso.get().load(picture).into(productPicture);
+            Picasso.get().load(picture).fit().into(productPicture);
         }
 
     }

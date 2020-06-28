@@ -35,12 +35,14 @@
             android:layout_height="wrap_content"
             android:text="This is a sample description"
             android:maxLines="5"
-            android:lines="4"/>
+            android:textSize="14sp"
+            android:lines="1"/>
 
         <TextView
             android:id="@+id/product_price"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textSize="14sp"
             android:text="Price: "/>
 
         <RatingBar
@@ -51,6 +53,7 @@
             android:stepSize="0.1"
             style="@style/Widget.AppCompat.RatingBar"
             />
+
     </LinearLayout>
 
     <TextView
@@ -111,7 +114,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Contact Details"
-        android:layout_marginLeft="32dp"/>
+        android:layout_marginLeft="32dp"
+        android:layout_marginBottom="4dp"/>
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -121,25 +126,43 @@
         <Button
             android:id="@+id/call_farmer"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:drawableLeft="@drawable/ic_call_black_24dp"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
+            android:layout_height="42dp"
+            android:drawableLeft="@drawable/ic_call_white_24dp"
+            android:background="@drawable/custom_button"
+            android:paddingStart="4dp"
+            android:paddingEnd="4dp"
+            android:drawablePadding="8dp"
+            android:textColor="@color/colorWhite"
+            android:textStyle="bold"
+            android:layout_marginEnd="8dp"
             android:text="Call"/>
 
         <Button
             android:id="@+id/text_farmer"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:drawableLeft="@drawable/bt_ic_sms_code"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
+            android:layout_height="42dp"
+            android:drawableLeft="@drawable/ic_textsms_white_24dp"
+            android:background="@drawable/custom_button"
+            android:paddingStart="4dp"
+            android:paddingEnd="4dp"
+            android:drawablePadding="8dp"
+            android:textColor="@color/colorWhite"
+            android:textStyle="bold"
+            android:layout_marginEnd="8dp"
             android:text="Text"/>
 
         <Button
             android:id="@+id/chat_farmer"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:drawableLeft="@drawable/ic_chat_bubble_black_24dp"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
+            android:layout_height="42dp"
+            android:drawableLeft="@drawable/ic_chat_bubble_white_24dp"
+            android:background="@drawable/custom_button"
+            android:paddingStart="4dp"
+            android:paddingEnd="4dp"
+            android:drawablePadding="8dp"
+            android:textColor="@color/colorWhite"
+            android:textStyle="bold"
+            android:layout_marginEnd="8dp"
             android:text="Chat"/>
 
     </LinearLayout>
