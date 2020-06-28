@@ -20,14 +20,10 @@
             android:layout_height="240dp"
             android:src="@drawable/logo" />
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
             <EditText
                 android:id="@+id/email_address_input"
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="50dp"
                 android:hint="Email Address"
                 android:background="@drawable/custom_input"
                 android:inputType="textEmailAddress"
@@ -35,42 +31,46 @@
                 android:ems="10"
                 android:paddingStart="12dp"
                 android:paddingEnd="12dp"
-
-                android:drawableStart="@drawable/ic_email_black_24dp"/>
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+                android:drawablePadding="12dp"
+                android:drawableStart="@drawable/ic_email_black_24dp"
+                android:layout_marginBottom="18dp"/>
 
             <EditText
                 android:id="@+id/password_input"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="50dp"
+                android:drawablePadding="12dp"
                 android:hint="@string/password"
                 android:background="@drawable/custom_input"
                 android:inputType="textPassword"
                 android:ems="10"
                 android:textSize="14sp"
-                android:drawableStart="@drawable/ic_lock_black_24dp"/>
-        </com.google.android.material.textfield.TextInputLayout>
-        
-        <!--Buttons-->
-        
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:drawableStart="@drawable/ic_lock_black_24dp"
+                android:layout_marginBottom="20dp"
+                />
+
         <Button
             android:id="@+id/button_login"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Login"/>
+            android:layout_height="50dp"
+            android:background="@drawable/custom_button"
+            android:textColor="@color/colorWhite"
+            android:text="Login"
+            android:layout_marginBottom="12dp"
+            android:textStyle="bold"/>
 
         <!--Link to Sign Up-->
 
         <Button
             android:id="@+id/button_sign_up"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Sign Up"/>
+            android:layout_height="50dp"
+            android:background="@drawable/custom_button"
+            android:textColor="@color/colorWhite"
+            android:text="Sign Up"
+            android:textStyle="bold"/>
 
         <ProgressBar
             android:id="@+id/progressBar"
