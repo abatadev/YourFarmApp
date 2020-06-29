@@ -37,12 +37,74 @@
 
     </RelativeLayout>
 
+    <androidx.cardview.widget.CardView
+        android:id="@+id/product_card_view"
+        android:layout_height="100dp"
+        android:layout_width="match_parent"
+        android:layout_below="@id/farmer_information"
+        android:layout_margin="8dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="8dp">
+
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/product_image_card_view"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_marginRight="16dp"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+                <TextView
+                android:id="@+id/product_name_card_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Product Name"
+                android:textSize="18sp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/product_price_card_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Price"
+                android:textSize="14sp"/>
+
+            <Button
+                android:id="@+id/mark_as_complete_card_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mark as Complete"
+                android:background="@drawable/custom_button"
+                android:textColor="@color/colorWhite"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+
+    </androidx.cardview.widget.CardView>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/messages_list_users"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/linear_layout"
-        android:layout_below="@id/farmer_information"
+android:layout_below="@id/product_card_view"
         android:layout_centerHorizontal="true"/>
 
     <LinearLayout

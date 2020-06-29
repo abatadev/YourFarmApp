@@ -74,6 +74,7 @@
         android:textColor="@color/colorWhite"
         android:textStyle="bold"
         android:textAlignment="center"
+
         />
 
     <TextView

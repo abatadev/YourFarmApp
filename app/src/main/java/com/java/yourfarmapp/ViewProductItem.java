@@ -105,7 +105,10 @@ public class ViewProductItem extends AppCompatActivity {
                             chatIntent.putExtra("farmerId", productModel.getUserKey());
                             chatIntent.putExtra("farmerName", productModel.getFullName());
                             chatIntent.putExtra("productId", productModel.getCropProductID());
+                            chatIntent.putExtra("cropName", productModel.getCropName());
+                            chatIntent.putExtra("cropPrice", productModel.getCropPrice());
                             chatIntent.putExtra("farmerProfilePictureCircle", productModel.getFarmerProfilePic());
+                            chatIntent.putExtra("productPicture", productModel.getCropImage());
                             startActivity(chatIntent);
                         }
                     });
@@ -139,7 +142,7 @@ public class ViewProductItem extends AppCompatActivity {
 
                     productName.setText(productModel.getCropName());
                     productDescription.setText("Description: " + productModel.getCropDescription());
-                    productPrice.setText("$: " + productModel.getCropPrice());
+                    productPrice.setText("₱: " + productModel.getCropPrice());
 
                     //Rating Bar
                     farmerName.setText(productModel.getFullName());

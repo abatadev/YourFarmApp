@@ -51,6 +51,10 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class ChatActivity extends AppCompatActivity {
 
 
+    private CircleImageView cardViewCircleImage;
+    private TextView cardViewProductName;
+    private TextView cardViewProductPrice;
+
     private ImageButton sendMessageButton, sendImageButton;
     private EditText userMessageInput;
     RecyclerView userMessagesList;
@@ -61,6 +65,10 @@ public class ChatActivity extends AppCompatActivity {
     private String messageReceiverID, messageReceiverName, productId;
     private String messageSenderId;
     private String farmerProfilePic;
+
+    private String cropPicture;
+
+    private String cropName, cropPrice;
 
     private String nameOfSender, nameOfReceiver;
 
@@ -95,7 +103,30 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
 
+        retrieveCardViewProduct();
         fetchMessages();
+    }
+
+    private void retrieveCardViewProduct() {
+        //Pass from intent of detailed product activity
+
+        productId = getIntent().getExtras().get("productId").toString();
+        cropName = getIntent().getExtras().get("cropName").toString();
+        cropPrice = getIntent().getExtras().get("cropPrice").toString();
+        cropPicture = getIntent().getExtras().get("productPicture").toString();
+
+        cardViewProductName.setText(cropName);
+        cardViewProductPrice.setText(cropPrice);
+        Picasso.get().load(cropPicture).fit().into(cardViewCircleImage);
+    }
+
+    /**
+     * Run this code to process the product order as complete on a set on click listener
+     * button, refer from Firebase to process order, to use the OrderModel. */
+
+
+    private void processProductInformation() {
+
     }
 
     private void fetchMessages() {
@@ -110,6 +141,9 @@ public class ChatActivity extends AppCompatActivity {
                             MessagesModel messagesModel = dataSnapshot.getValue(MessagesModel.class);
                             messagesModelList.add(messagesModel);
                             messagesAdapter.notifyDataSetChanged();
+
+                            Log.d("testing", "Sender ID: " + messageSenderId);
+                            Log.d("testing", "Receiver ID: " + messageReceiverID);
                         } else {
                             Toast.makeText(ChatActivity.this, "No existing chat.", Toast.LENGTH_SHORT).show();
                             Log.d("testing", "Sender ID: " + messageSenderId);
@@ -170,9 +204,6 @@ public class ChatActivity extends AppCompatActivity {
             Calendar calendarForTime = Calendar.getInstance();
             SimpleDateFormat currentTime = new SimpleDateFormat("HH:mm");
             String saveCurrentTime = currentTime.format(calendarForTime.getTime());
-
-
-
 
             Map messageTextBody = new HashMap();
                 messageTextBody.put("message", messageText);
@@ -245,6 +276,10 @@ public class ChatActivity extends AppCompatActivity {
         sendMessageButton = findViewById(R.id.send_message_button);
         sendImageButton = findViewById(R.id.send_image_file);
         userMessageInput = findViewById(R.id.send_message);
+
+        cardViewCircleImage = findViewById(R.id.product_image_card_view);
+        cardViewProductName = findViewById(R.id.product_name_card_view);
+        cardViewProductPrice = findViewById(R.id.product_price_card_view);
 
         receiverName = findViewById(R.id.custom_profile_name);
         receiverProfileImage = findViewById(R.id.custom_profile_picture_circle);

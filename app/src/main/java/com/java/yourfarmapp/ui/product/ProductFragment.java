@@ -126,7 +126,7 @@ public class ProductFragment extends Fragment {
                             //View holder to set name
                             productViewHolder.setProductName(productTitle);
                             productViewHolder.setProductDescription(productDescription);
-                            productViewHolder.setProductPrice("Price: " + productPrice);
+                            productViewHolder.setProductPrice("₱: " + productPrice);
                             productViewHolder.setCropPicture(productImageString);
 
                             productViewHolder.mView.setOnClickListener(new View.OnClickListener() {
