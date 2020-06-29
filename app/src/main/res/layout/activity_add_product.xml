@@ -79,7 +79,7 @@
                 android:textSize="18sp"
                 android:textStyle="bold"
                 android:layout_marginLeft="8dp"
-                android:text=""/>
+                android:text="Test"/>
 
         </LinearLayout>
 

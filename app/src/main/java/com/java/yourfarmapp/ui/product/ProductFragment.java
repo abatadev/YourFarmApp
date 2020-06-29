@@ -68,7 +68,6 @@ public class ProductFragment extends Fragment {
 
         productViewModel = ViewModelProviders.of(   this).get(ProductViewModel.class); // Call view model
         View root = inflater.inflate(R.layout.fragment_product, container, false);
-
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setReverseLayout(true);
         linearLayoutManager.setStackFromEnd(true);
@@ -78,11 +77,14 @@ public class ProductFragment extends Fragment {
         recyclerView = (RecyclerView) root.findViewById(R.id.list);
         recyclerView.setLayoutManager(linearLayoutManager);
 
+        String fromCategoryId = getActivity().getIntent().getExtras().get("categoryId").toString();
+
         addProductButton = root.findViewById(R.id.add_product);
         addProductButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getContext(), AddProductActivity.class);
+                intent.putExtra("categoryId", fromCategoryId);
                 startActivity(intent);
             }
         });

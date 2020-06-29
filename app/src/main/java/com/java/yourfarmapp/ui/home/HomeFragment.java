@@ -1,5 +1,6 @@
 package com.java.yourfarmapp.ui.home;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -93,6 +94,7 @@ public class HomeFragment extends Fragment {
                         if(dataSnapshot.exists()) {
                             final String categoryNameToString =  dataSnapshot.child("categoryName").getValue().toString();
                             final String categoryImageToString = dataSnapshot.child("categoryImage").getValue().toString();
+                            final String categoryId = dataSnapshot.child("categoryID").getValue().toString();
 
                             homeViewHolder.setCategoryName(categoryNameToString);
                             homeViewHolder.setCategoryImage(categoryImageToString);
@@ -100,7 +102,9 @@ public class HomeFragment extends Fragment {
                             homeViewHolder.mView.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
-                                    Toast.makeText(getContext(), "TEST", Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(getContext(), ProductFragment.class);
+                                    intent.putExtra("categoryId", categoryId);
+                                    startActivity(intent);
                                 }
                             });
                             

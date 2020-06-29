@@ -92,9 +92,8 @@ public class AddProductActivity extends AppCompatActivity {
         cropPrice = (EditText) findViewById(R.id.crop_price);
         cropQuantity = findViewById(R.id.crop_quantity);
         cropDescription = findViewById(R.id.product_description);
-//
-//        categorySpinner = findViewById(R.id.category_spinner);
-//        quantitySpinner = findViewById(R.id.quantity_spinner);
+        String fromCategoryId = getIntent().getExtras().get("categoryId").toString();
+        categoryTextView.setText(fromCategoryId);
 
         buttonSave = (Button) findViewById(R.id.save_product_button);
 

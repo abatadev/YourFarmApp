@@ -1,38 +1,71 @@
 package com.java.yourfarmapp.Model;
 
-public class Orders {
-    private String productName, productDescription, productQuantity, productPrice, productPicture;
+public class OrderModel {
 
+    private String farmerId, dealerId;
+    private String productId, productName, productDescription, productQuantity, productPrice, productPicture;
+    private String orderId;
     private String farmerName, farmerContactNumber, farmerPicture;
     private String dealerName, dealerContactNumber, dealerPicture;
 
-    private String dataStart, dateFinished;
+    private String orderDate;
+    private String orderTime;
 
     private boolean isComplete;
 
-    public Orders() {
+    public OrderModel() {
     }
 
-    public Orders(String productName, String productDescription, String productQuantity, String productPrice, String productPicture,
-                  String farmerName, String farmerContactNumber, String farmerPicture,
-                  String dealerName, String dealerContactNumber, String dealerPicture,
-                  String dataStart, String dateFinished,
-                  boolean isComplete) {
-
+    public OrderModel(String farmerId, String dealerId, String productId, String productName, String productDescription, String productQuantity, String productPrice, String productPicture, String orderId, String farmerName, String farmerContactNumber, String farmerPicture, String dealerName, String dealerContactNumber, String dealerPicture, String dataStart, String dateFinished, boolean isComplete) {
+        this.farmerId = farmerId;
+        this.dealerId = dealerId;
+        this.productId = productId;
         this.productName = productName;
         this.productDescription = productDescription;
         this.productQuantity = productQuantity;
         this.productPrice = productPrice;
         this.productPicture = productPicture;
+        this.orderId = orderId;
         this.farmerName = farmerName;
         this.farmerContactNumber = farmerContactNumber;
         this.farmerPicture = farmerPicture;
         this.dealerName = dealerName;
         this.dealerContactNumber = dealerContactNumber;
         this.dealerPicture = dealerPicture;
-        this.dataStart = dataStart;
-        this.dateFinished = dateFinished;
+
         this.isComplete = isComplete;
+    }
+
+    public String getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
+    }
+
+    public String getFarmerId() {
+        return farmerId;
+    }
+
+    public void setFarmerId(String farmerId) {
+        this.farmerId = farmerId;
+    }
+
+    public String getDealerId() {
+        return dealerId;
+    }
+
+    public void setDealerId(String dealerId) {
+        this.dealerId = dealerId;
+    }
+
+    public String getProductId() {
+        return productId;
+    }
+
+    public void setProductId(String productId) {
+        this.productId = productId;
     }
 
     public String getProductName() {
@@ -123,24 +156,24 @@ public class Orders {
         this.dealerPicture = dealerPicture;
     }
 
-    public String getDataStart() {
-        return dataStart;
+    public String getOrderDate() {
+        return orderDate;
     }
 
-    public void setDataStart(String dataStart) {
-        this.dataStart = dataStart;
+    public void setOrderDate(String orderDate) {
+        this.orderDate = orderDate;
     }
 
-    public String getDateFinished() {
-        return dateFinished;
+    public String getOrderTime() {
+        return orderTime;
     }
 
-    public void setDateFinished(String dateFinished) {
-        this.dateFinished = dateFinished;
+    public void setOrderTime(String orderTime) {
+        this.orderTime = orderTime;
     }
 
-    public boolean isComplete() {
-        return isComplete;
+    public boolean isComplete(boolean isComplete) {
+        return this.isComplete;
     }
 
     public void setComplete(boolean complete) {

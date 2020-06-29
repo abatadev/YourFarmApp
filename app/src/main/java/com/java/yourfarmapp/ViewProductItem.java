@@ -109,6 +109,9 @@ public class ViewProductItem extends AppCompatActivity {
                             chatIntent.putExtra("cropPrice", productModel.getCropPrice());
                             chatIntent.putExtra("farmerProfilePictureCircle", productModel.getFarmerProfilePic());
                             chatIntent.putExtra("productPicture", productModel.getCropImage());
+                            chatIntent.putExtra("cropDescription", productModel.getCropDescription());
+                            chatIntent.putExtra("cropPrice", productModel.getCropPrice());
+                            chatIntent.putExtra("cropQuantity", productModel.getCropQuantity());
                             startActivity(chatIntent);
                         }
                     });

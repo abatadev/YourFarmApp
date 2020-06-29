@@ -9,6 +9,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Message;
@@ -16,6 +17,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -23,6 +25,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -34,6 +37,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.java.yourfarmapp.Adapter.MessagesAdapter;
 import com.java.yourfarmapp.Model.MessagesModel;
+import com.java.yourfarmapp.Model.OrderModel;
 import com.squareup.picasso.Picasso;
 
 import org.w3c.dom.Text;
@@ -50,12 +54,14 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ChatActivity extends AppCompatActivity {
 
+    private DatabaseReference orderReference;
 
     private CircleImageView cardViewCircleImage;
     private TextView cardViewProductName;
     private TextView cardViewProductPrice;
 
     private ImageButton sendMessageButton, sendImageButton;
+    private Button markAsComplete;
     private EditText userMessageInput;
     RecyclerView userMessagesList;
     private final List<MessagesModel> messagesModelList = new ArrayList<>();
@@ -103,6 +109,15 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
 
+        markAsComplete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                productPrompt();
+            }
+        });
+
+
+
         retrieveCardViewProduct();
         fetchMessages();
     }
@@ -126,7 +141,112 @@ public class ChatActivity extends AppCompatActivity {
 
 
     private void processProductInformation() {
+        orderReference = FirebaseDatabase.getInstance().getReference().child("Order");
 
+        String orderId, farmerId, dealerId, farmerName, dealerName, productId,
+                cropName, cropDescription, cropPrice, cropQuantity;
+
+        boolean isComplete = true;
+
+        Calendar calendarForDate = Calendar.getInstance();
+        SimpleDateFormat currentDate = new SimpleDateFormat("MM-dd-yyyy");
+        String saveCurrentDate = currentDate.format(calendarForDate.getTime());
+
+        Calendar calendarForTime = Calendar.getInstance();
+        SimpleDateFormat currentTime = new SimpleDateFormat("HH:mm");
+        String saveCurrentTime = currentTime.format(calendarForTime.getTime());
+
+
+        //Get the intent values from AddProductActivity
+        orderId = orderReference.push().getKey();
+        farmerId = getIntent().getExtras().get("farmerId").toString();
+        dealerId = getIntent().getExtras().get("dealerId").toString();
+        dealerName = getIntent().getExtras().get("farmerName").toString();
+        productId = getIntent().getExtras().get("productId").toString();
+        cropName = getIntent().getExtras().get("cropName").toString();
+        cropDescription = getIntent().getExtras().get("cropDescription").toString();
+        cropPrice = getIntent().getExtras().get("cropPrice").toString();
+        cropQuantity = getIntent().getExtras().get("cropQuantity").toString();
+
+        OrderModel orderModel = new OrderModel();
+
+        orderModel.setOrderId(orderId);
+        orderModel.setFarmerId(farmerId);
+        orderModel.setDealerId(dealerId);
+        orderModel.setDealerName(dealerName);
+        orderModel.setProductId(productId);
+        orderModel.setProductName(cropName);
+        orderModel.setProductDescription(cropDescription);
+        orderModel.setProductPrice(cropPrice);
+        orderModel.setProductQuantity(cropQuantity);
+        orderModel.setOrderDate(saveCurrentDate);
+        orderModel.setOrderTime(saveCurrentTime);
+        orderModel.isComplete(isComplete);
+        //Set isComplete
+
+        orderReference.setValue(orderModel)
+        .addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                Toast.makeText(ChatActivity.this, "Order has been processed.", Toast.LENGTH_SHORT).show();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(ChatActivity.this, "Error: " + e, Toast.LENGTH_SHORT).show();
+                Log.e("Order", e.getMessage().toString());
+            }
+        });
+    }
+
+    private void productPrompt() {
+        AlertDialog.Builder productPromptBuilder = new AlertDialog.Builder(ChatActivity.this);
+
+        productPromptBuilder.setTitle("Update Order");
+        productPromptBuilder.setMessage("Please complete the following information");
+
+        View productPromptView = LayoutInflater.from(ChatActivity.this).inflate(R.layout.layout_activity_show_chat_dialog, null); //Change
+
+        productPromptBuilder.setNegativeButton("Cancel", ((dialogInterface, i) -> {
+                dialogInterface.dismiss();
+        }));
+
+        productPromptBuilder.setPositiveButton("Change", ((dialogInterface, i) -> {
+            changeProductDetails();
+        }));
+
+        productPromptBuilder.setNeutralButton("Confirm", (((dialogInterface, i) -> {
+            processProductInformation();
+        })));
+
+        productPromptBuilder.setView(productPromptView);
+        AlertDialog dialog = productPromptBuilder.create();
+        dialog.show();
+    }
+
+    private void changeProductDetails() {
+        AlertDialog.Builder changeProductDetailsBuilder = new AlertDialog.Builder(ChatActivity.this);
+
+        changeProductDetailsBuilder.setTitle("Process the order.");
+        changeProductDetailsBuilder.setMessage("");
+
+        //TextViews
+
+
+        //Firebase set
+        View itemView = LayoutInflater.from(ChatActivity.this).inflate(R.layout.layout_activity_show_chat_dialog, null); //Change
+
+        changeProductDetailsBuilder.setNegativeButton("Cancel", ((dialogInterface, i) -> {
+            dialogInterface.dismiss();
+        }));
+
+        changeProductDetailsBuilder.setNeutralButton("Confirm", (((dialogInterface, i) -> {
+            processProductInformation();
+        })));
+
+        changeProductDetailsBuilder.setView(itemView);
+        AlertDialog dialog = changeProductDetailsBuilder.create();
+        dialog.show();
     }
 
     private void fetchMessages() {
@@ -246,7 +366,7 @@ public class ChatActivity extends AppCompatActivity {
         farmerProfilePic = getIntent().getExtras().get("farmerProfilePictureCircle").toString();
 
         receiverName.setText(messageReceiverName);
-        Glide.with(getApplicationContext()).load(farmerProfilePic).into(receiverProfileImage);
+        Glide.with(ChatActivity.this).load(farmerProfilePic).into(receiverProfileImage);
 
         Log.d(TAGS, "Farmer ID: " + messageReceiverID);
         Log.d(TAGS, "Farmer Name: " + messageReceiverName);
@@ -276,6 +396,7 @@ public class ChatActivity extends AppCompatActivity {
         sendMessageButton = findViewById(R.id.send_message_button);
         sendImageButton = findViewById(R.id.send_image_file);
         userMessageInput = findViewById(R.id.send_message);
+        markAsComplete = findViewById(R.id.mark_as_complete_card_view);
 
         cardViewCircleImage = findViewById(R.id.product_image_card_view);
         cardViewProductName = findViewById(R.id.product_name_card_view);
