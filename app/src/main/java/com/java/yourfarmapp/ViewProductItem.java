@@ -102,6 +102,7 @@ public class ViewProductItem extends AppCompatActivity {
                         public void onClick(View view) {
                             Intent chatIntent = new Intent(ViewProductItem.this, ChatActivity.class);
                             chatIntent.putExtra("dealerId", userId);
+                            //chatIntent.putExtra("dealerName", productModel.);
                             chatIntent.putExtra("farmerId", productModel.getUserKey());
                             chatIntent.putExtra("farmerName", productModel.getFullName());
                             chatIntent.putExtra("productId", productModel.getCropProductID());

@@ -1,4 +1,4 @@
-package com.java.yourfarmapp.ui.dealers;
+package com.java.yourfarmapp.ui.users;
 
 import androidx.lifecycle.ViewModelProviders;
 
@@ -18,7 +18,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.firebase.ui.auth.data.model.User;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.DataSnapshot;
@@ -27,18 +26,15 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.java.yourfarmapp.Model.CategoryModel;
 import com.java.yourfarmapp.Model.UserModel;
 import com.java.yourfarmapp.R;
-import com.java.yourfarmapp.ui.home.HomeFragment;
-import com.java.yourfarmapp.ui.home.HomeViewModel;
 import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class DealerFragment extends Fragment {
+public class UserFragment extends Fragment {
 
-    private DealerViewModel dealerViewModel;
+    private UserViewModel userViewModel;
     private RecyclerView recyclerView;
 
     private DatabaseReference userRef;
@@ -47,9 +43,9 @@ public class DealerFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
 
-        dealerViewModel =
-                ViewModelProviders.of(this).get(DealerViewModel.class);
-        View root = inflater.inflate(R.layout.dealer_fragment, container, false);
+        userViewModel =
+                ViewModelProviders.of(this).get(UserViewModel.class);
+        View root = inflater.inflate(R.layout.user_fragment, container, false);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setReverseLayout(false);
@@ -68,7 +64,7 @@ public class DealerFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        dealerViewModel = ViewModelProviders.of(this).get(DealerViewModel.class);
+        userViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
 
     }
 
@@ -96,15 +92,31 @@ public class DealerFragment extends Fragment {
 
                 boolean isTrue = true;
 
-                userRef.orderByChild(dealer).equalTo(isTrue).addValueEventListener(new ValueEventListener() {
+                Log.d("Dealer Fragment", "Print Query: " + userRef.child(userIDs).orderByChild(dealer).equalTo(isTrue).toString());
+
+                userRef.child(userIDs).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        Log.d("Dealer Fragment", "Print: " + userRef.child(userIDs).orderByChild(dealer).equalTo(isTrue).toString());
                         if(dataSnapshot.exists()) {
                             final String dealerNameToString =  dataSnapshot.child("fullName").getValue().toString();
                             final String dealerImageToString = dataSnapshot.child("profilePic").getValue().toString();
+                            final String contactNumber = dataSnapshot.child("number").getValue().toString();
+
+                            final String dealerToString = dataSnapshot.child("dealer").getValue().toString();
+                            final String farmerToString = dataSnapshot.child("farmer").getValue().toString();
 
                             dealerViewHolder.setDealerName(dealerNameToString);
+                            dealerViewHolder.setContactNumber(contactNumber);
                             dealerViewHolder.setDealerProfilePicture(dealerImageToString);
+
+                            if (dealerToString.equals("true")) {
+                                dealerViewHolder.setAccountType("Dealer");
+                            }
+
+                            else if (dealerToString.equals("false")) {
+                                dealerViewHolder.setAccountType("Farmer");
+                            }
 
                         } else {
                             Toast.makeText(getContext(), "Unable to find dealers.", Toast.LENGTH_SHORT).show();
@@ -138,6 +150,16 @@ public class DealerFragment extends Fragment {
         public void setDealerName(String name) {
             TextView dealerName = mView.findViewById(R.id.dealer_name_list);
             dealerName.setText(name);
+        }
+
+        public void setAccountType(String test) {
+            TextView accountType = mView.findViewById(R.id.account_type_text);
+            accountType.setText(test);
+        }
+
+        public void setContactNumber(String contactNumber) {
+            TextView contactNumbers = mView.findViewById(R.id.dealer_contact_number_list);
+            contactNumbers.setText(contactNumber);
         }
 
         public void setDealerProfilePicture(String image) {

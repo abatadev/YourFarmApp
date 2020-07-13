@@ -17,7 +17,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="85dp"
             android:orientation="horizontal"
             android:weightSum="3">
 
@@ -39,9 +39,10 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="2"
-                android:gravity="center"
+                android:gravity="left"
                 android:layout_marginEnd="32dp"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:layout_marginTop="8dp">
 
                 <TextView
                     android:id="@+id/dealer_name_list"
@@ -49,14 +50,21 @@
                     android:layout_height="wrap_content"
                     android:text="Name"
                     android:textStyle="bold"
-                    android:textSize="14sp"/>
+                    android:textSize="16sp"/>
 
                 <TextView
                     android:id="@+id/dealer_contact_number_list"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="12sp"
+                    android:textSize="14sp"
                     android:text="This is a test name"/>
+
+                <TextView
+                    android:id="@+id/account_type_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:text="Account Type"/>
 
             </LinearLayout>
         </LinearLayout>

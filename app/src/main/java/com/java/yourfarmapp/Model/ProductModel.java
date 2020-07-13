@@ -15,6 +15,9 @@ public class ProductModel {
     private String fullName;
     private String number;
 
+    private String productCategoryName;
+    private int listId;
+
     private String farmerProfilePic;
 
     List<UserModel> users;
@@ -26,6 +29,22 @@ public class ProductModel {
         this.cropProductID = cropProductID;
         this.cropName = cropName;
         this.cropDescription = cropDescription;
+    }
+
+    public String getProductCategoryName() {
+        return productCategoryName;
+    }
+
+    public void setProductCategoryName(String productCategoryName) {
+        this.productCategoryName = productCategoryName;
+    }
+
+    public int getListId() {
+        return listId;
+    }
+
+    public void setListId(int listId) {
+        this.listId = listId;
     }
 
     public String getCropProductID() {

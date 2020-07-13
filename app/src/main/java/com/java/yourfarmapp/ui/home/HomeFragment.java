@@ -14,10 +14,13 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
@@ -102,9 +105,27 @@ public class HomeFragment extends Fragment {
                             homeViewHolder.mView.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
-                                    Intent intent = new Intent(getContext(), ProductFragment.class);
-                                    intent.putExtra("categoryId", categoryId);
-                                    startActivity(intent);
+//                                    Toast.makeText(getContext(), "ID: " + categoryId, Toast.LENGTH_SHORT).show();
+//                                    //Switch to bundle
+//                                    Intent intent = new Intent(getActivity(), ProductFragment.class);
+//                                    intent.putExtra("categoryNameToString", categoryNameToString);
+//                                    intent.putExtra("categoryId", categoryNameToString);
+//                                    startActivity(intent);
+
+//                                    ProductFragment productFragment = new ProductFragment();
+//                                    Bundle bundle = new Bundle();
+//                                    bundle.putString("categoryName" , categoryImageToString);
+//                                    bundle.putString("categoryId", categoryId);
+//                                    productFragment.setArguments(bundle);
+
+
+//                                    FragmentManager fragmentManager = getFragmentManager();
+//                                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//                                    Fragment productFragment = new Fragment();
+//                                    fragmentTransaction.replace(R.id.product_container, productFragment);
+//                                    fragmentTransaction.addToBackStack(null);
+//                                    fragmentTransaction.commit();
+
                                 }
                             });
                             

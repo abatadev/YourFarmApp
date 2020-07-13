@@ -7,6 +7,7 @@ public class OrderModel {
     private String orderId;
     private String farmerName, farmerContactNumber, farmerPicture;
     private String dealerName, dealerContactNumber, dealerPicture;
+    private String productCategory;
 
     private String orderDate;
     private String orderTime;
@@ -16,7 +17,15 @@ public class OrderModel {
     public OrderModel() {
     }
 
-    public OrderModel(String farmerId, String dealerId, String productId, String productName, String productDescription, String productQuantity, String productPrice, String productPicture, String orderId, String farmerName, String farmerContactNumber, String farmerPicture, String dealerName, String dealerContactNumber, String dealerPicture, String dataStart, String dateFinished, boolean isComplete) {
+    public OrderModel(String farmerId, String dealerId, String productId, String productName,
+                      String productDescription, String productQuantity, String productPrice,
+                      String productPicture, String orderId, String farmerName,
+                      String farmerContactNumber,
+                      String farmerPicture, String dealerName, String dealerContactNumber,
+                      String dealerPicture,
+                      String productCategory, String orderDate, String orderTime,
+                      boolean isComplete) {
+
         this.farmerId = farmerId;
         this.dealerId = dealerId;
         this.productId = productId;
@@ -32,8 +41,22 @@ public class OrderModel {
         this.dealerName = dealerName;
         this.dealerContactNumber = dealerContactNumber;
         this.dealerPicture = dealerPicture;
-
+        this.productCategory = productCategory;
+        this.orderDate = orderDate;
+        this.orderTime = orderTime;
         this.isComplete = isComplete;
+    }
+
+    public String getProductCategory() {
+        return productCategory;
+    }
+
+    public void setProductCategory(String productCategory) {
+        this.productCategory = productCategory;
+    }
+
+    public boolean isComplete() {
+        return isComplete;
     }
 
     public String getOrderId() {

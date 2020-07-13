@@ -14,9 +14,9 @@
             android:icon="@drawable/ic_dashboard_black_24dp"
             android:title="@string/menu_product" />
         <item
-            android:id="@+id/nav_dealer"
-            android:icon="@drawable/ic_filter_drama_black_24dp"
-            android:title="Dealers"/>
+            android:id="@+id/nav_user"
+            android:icon="@drawable/ic_person_outline_black_24dp"
+            android:title="Users"/>
 
         <item
             android:id="@+id/nav_farmer"

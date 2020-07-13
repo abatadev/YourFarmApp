@@ -29,6 +29,9 @@
         <activity android:name=".HomeActivity" />
         <activity android:name=".AddProductActivity" />
         <activity android:name=".UploadProfilePicture" />
+
+        <activity android:name=".ui.product.ProductFragment" />
+
     </application>
 
 </manifest>

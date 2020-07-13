@@ -58,7 +58,6 @@ public class AddProductActivity extends AppCompatActivity {
     DatabaseReference categoryReference;
 
     StorageReference productImagesRef;
-
     FirebaseUser mUser;
 
     private ImageView cropImage;
@@ -87,13 +86,16 @@ public class AddProductActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_product);
 
         cropImage = (ImageView) findViewById(R.id.crop_image);
-        categoryTextView = findViewById(R.id.category_text_view);
+        //categoryTextView = findViewById(R.id.category_text_view);
         cropName = (EditText) findViewById(R.id.crop_name);
         cropPrice = (EditText) findViewById(R.id.crop_price);
         cropQuantity = findViewById(R.id.crop_quantity);
         cropDescription = findViewById(R.id.product_description);
-        String fromCategoryId = getIntent().getExtras().get("categoryId").toString();
-        categoryTextView.setText(fromCategoryId);
+        categorySpinner = findViewById(R.id.category_spinner);
+        Bundle bundle = new Bundle();
+//        String fromCategoryName = bundle.getString("categoryName");
+//        String fromCategoryId = bundle.getString("categoryId");
+        //categoryTextView.setText(fromCategoryId);
 
         buttonSave = (Button) findViewById(R.id.save_product_button);
 
@@ -128,6 +130,7 @@ public class AddProductActivity extends AppCompatActivity {
             }
         });
 
+        populateSpinner();
     }
 
     private void openGallery() {
@@ -193,6 +196,28 @@ public class AddProductActivity extends AppCompatActivity {
         });
     }
 
+    private void populateSpinner() {
+        categoryReference = FirebaseDatabase.getInstance().getReference().child("Category");
+        productReference = FirebaseDatabase.getInstance().getReference().child("Product");
+
+        Spinner categorySpinner = findViewById(R.id.category_spinner);
+
+        List<String> category = new ArrayList<>();
+        category.add(0, "Choose Category");
+        category.add("Livestock");
+        category.add("Vegetables");
+        category.add("Rice");
+        category.add("Fruits");
+        category.add("Others");
+
+        ArrayAdapter<String> dataAdapter;
+        dataAdapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item,category);
+
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        categorySpinner.setAdapter(dataAdapter);
+    }
+
     private void sendProductToFirebase() {
         categoryReference = FirebaseDatabase.getInstance().getReference().child("Category");
         userReference = FirebaseDatabase.getInstance().getReference().child("User");
@@ -203,6 +228,7 @@ public class AddProductActivity extends AppCompatActivity {
 
         String productId = productReference.push().getKey();
         String categoryId = categoryReference.getKey();
+        int categorySelectedId = (int) categorySpinner.getSelectedItemId();
 
         productModel.setCropProductID(productId);
         productModel.setCropName(cropName.getText().toString());
@@ -211,6 +237,8 @@ public class AddProductActivity extends AppCompatActivity {
         productModel.setCropDescription(cropDescription.getText().toString());
         productModel.setUserKey(userReference.child(mUser.getUid()).getKey());
         productModel.setCropImage(downloadImageUrl);
+        productModel.setProductCategoryName(categorySpinner.getSelectedItem().toString());
+        productModel.setListId(categorySelectedId);
 
         Log.d(TAG, "IMAGE URL: " + downloadImageUrl);
 

@@ -26,6 +26,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -68,15 +69,16 @@ public class ChatActivity extends AppCompatActivity {
     private LinearLayoutManager linearLayoutManager;
     private MessagesAdapter messagesAdapter;
 
-    private String messageReceiverID, messageReceiverName, productId;
+    private String messageReceiverID, messageReceiverName;
     private String messageSenderId;
     private String farmerProfilePic;
 
     private String cropPicture;
 
-    private String cropName, cropPrice;
-
     private String nameOfSender, nameOfReceiver;
+
+    String orderId, farmerId, dealerId, farmerName, dealerName, productId,
+            cropName, cropDescription, cropPrice, cropQuantity;
 
     private TextView receiverName;
     private CircleImageView receiverProfileImage;
@@ -85,6 +87,7 @@ public class ChatActivity extends AppCompatActivity {
 
     DatabaseReference rootRef;
     DatabaseReference userRef;
+    DatabaseReference orderRef;
 
     FirebaseAuth mAuth;
 
@@ -143,8 +146,7 @@ public class ChatActivity extends AppCompatActivity {
     private void processProductInformation() {
         orderReference = FirebaseDatabase.getInstance().getReference().child("Order");
 
-        String orderId, farmerId, dealerId, farmerName, dealerName, productId,
-                cropName, cropDescription, cropPrice, cropQuantity;
+
 
         boolean isComplete = true;
 
@@ -161,7 +163,8 @@ public class ChatActivity extends AppCompatActivity {
         orderId = orderReference.push().getKey();
         farmerId = getIntent().getExtras().get("farmerId").toString();
         dealerId = getIntent().getExtras().get("dealerId").toString();
-        dealerName = getIntent().getExtras().get("farmerName").toString();
+        //dealerName = getIntent().getExtras().get("dealerName").toString();
+        farmerName = getIntent().getExtras().get("farmerName").toString();
         productId = getIntent().getExtras().get("productId").toString();
         cropName = getIntent().getExtras().get("cropName").toString();
         cropDescription = getIntent().getExtras().get("cropDescription").toString();
@@ -173,7 +176,8 @@ public class ChatActivity extends AppCompatActivity {
         orderModel.setOrderId(orderId);
         orderModel.setFarmerId(farmerId);
         orderModel.setDealerId(dealerId);
-        orderModel.setDealerName(dealerName);
+        //orderModel.setDealerName(dealerName);
+        orderModel.setFarmerName(farmerName);
         orderModel.setProductId(productId);
         orderModel.setProductName(cropName);
         orderModel.setProductDescription(cropDescription);
@@ -205,14 +209,10 @@ public class ChatActivity extends AppCompatActivity {
         productPromptBuilder.setTitle("Update Order");
         productPromptBuilder.setMessage("Please complete the following information");
 
-        View productPromptView = LayoutInflater.from(ChatActivity.this).inflate(R.layout.layout_activity_show_chat_dialog, null); //Change
+        View productPromptView = LayoutInflater.from(ChatActivity.this).inflate(R.layout.layout_activity_process_order, null); //Change
 
         productPromptBuilder.setNegativeButton("Cancel", ((dialogInterface, i) -> {
                 dialogInterface.dismiss();
-        }));
-
-        productPromptBuilder.setPositiveButton("Change", ((dialogInterface, i) -> {
-            changeProductDetails();
         }));
 
         productPromptBuilder.setNeutralButton("Confirm", (((dialogInterface, i) -> {
@@ -230,7 +230,76 @@ public class ChatActivity extends AppCompatActivity {
         changeProductDetailsBuilder.setTitle("Process the order.");
         changeProductDetailsBuilder.setMessage("");
 
+
+        orderRef = FirebaseDatabase.getInstance().getReference("Order");
+
+        String orderId = orderRef.getKey();
+        String farmerId, dealerId, farmerName, dealerName, productId,
+                cropName, cropDescription, cropPrice, cropQuantity;
+
         //TextViews
+        TextView editProductName;
+        TextView editProductCategory;
+        EditText editProductPrice;
+        EditText editProductQuantity;
+
+        editProductName = findViewById(R.id.edit_product_name);
+        editProductCategory = findViewById(R.id.edit_product_category);
+        editProductPrice = findViewById(R.id.edit_product_price);
+        editProductQuantity = findViewById(R.id.edit_product_quantity);
+
+        orderId = orderReference.push().getKey();
+        farmerId = getIntent().getExtras().get("farmerId").toString();
+        dealerId = getIntent().getExtras().get("dealerId").toString();
+        dealerName = getIntent().getExtras().get("dealerName").toString();
+        farmerName = getIntent().getExtras().get("farmerName").toString();
+        productId = getIntent().getExtras().get("productId").toString();
+        cropName = getIntent().getExtras().get("cropName").toString();
+        cropDescription = getIntent().getExtras().get("cropDescription").toString();
+        cropPrice = getIntent().getExtras().get("cropPrice").toString();
+        cropQuantity = getIntent().getExtras().get("cropQuantity").toString();
+
+
+
+        orderRef.child(orderId).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                String productName = dataSnapshot.child("productName").toString();
+                String productCategory = dataSnapshot.child("productCategory").toString();
+                String productQuantity = dataSnapshot.child("productQuantity").toString();
+                String productPrice = dataSnapshot.child("productPrice").toString();
+
+                editProductName.setText(cropName);
+                editProductCategory.setText(productCategory);
+                editProductQuantity.setText(cropQuantity);
+                editProductPrice.setText(cropPrice);
+
+                OrderModel orderModel = new OrderModel();
+                orderModel.setProductName(productName);
+                orderModel.setProductCategory(productCategory);
+                orderModel.setProductQuantity(productQuantity);
+                orderModel.setProductPrice(productPrice);
+                
+                orderRef.setValue(orderModel).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Toast.makeText(ChatActivity.this, "Order has been updated", Toast.LENGTH_SHORT).show();     
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(ChatActivity.this, "Order has failed to update.", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
 
 
         //Firebase set
@@ -243,6 +312,7 @@ public class ChatActivity extends AppCompatActivity {
         changeProductDetailsBuilder.setNeutralButton("Confirm", (((dialogInterface, i) -> {
             processProductInformation();
         })));
+
 
         changeProductDetailsBuilder.setView(itemView);
         AlertDialog dialog = changeProductDetailsBuilder.create();

@@ -1,13 +1,13 @@
-package com.java.yourfarmapp.ui.dealers;
+package com.java.yourfarmapp.ui.users;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class DealerViewModel extends ViewModel {
+public class UserViewModel extends ViewModel {
     private MutableLiveData<String> mText;
 
-    public DealerViewModel() {
+    public UserViewModel() {
         mText = new MutableLiveData<>();
         mText.setValue("This is dealer fragment");
     }

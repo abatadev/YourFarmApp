@@ -54,7 +54,6 @@ public class HomeActivity extends AppCompatActivity implements   NavigationView.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shop);
-
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -72,7 +71,7 @@ public class HomeActivity extends AppCompatActivity implements   NavigationView.
         //View headerView = navigationView.getHeaderView(0);
 
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_product, R.id.nav_profile, R.id.nav_settings)
+                R.id.nav_home, R.id.nav_product, R.id.nav_user, R.id.nav_profile, R.id.nav_settings)
                 .setDrawerLayout(drawer)
                 .build();
 
@@ -82,7 +81,7 @@ public class HomeActivity extends AppCompatActivity implements   NavigationView.
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.bringToFront();
 
-        menuClick = R.id.nav_home;
+         menuClick = R.id.nav_home;
     }
 
     @Override
@@ -107,10 +106,10 @@ public class HomeActivity extends AppCompatActivity implements   NavigationView.
                     navController.navigate(R.id.nav_product);
                 }
                 break;
-            case R.id.nav_dealer:
+            case R.id.nav_user:
                 if(menuItem.getItemId() != menuClick) {
                     navController.popBackStack();
-                    navController.navigate(R.id.nav_dealer);
+                    navController.navigate(R.id.nav_user);
                 }
                 break;
             case R.id.nav_farmer:
