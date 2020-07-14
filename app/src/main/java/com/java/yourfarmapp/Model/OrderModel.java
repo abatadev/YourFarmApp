@@ -3,7 +3,7 @@ package com.java.yourfarmapp.Model;
 public class OrderModel {
 
     private String farmerId, dealerId;
-    private String productId, productName, productDescription, productQuantity, productPrice, productPicture;
+    private String productId, productName, productDescription, productPicture;
     private String orderId;
     private String farmerName, farmerContactNumber, farmerPicture;
     private String dealerName, dealerContactNumber, dealerPicture;
@@ -12,27 +12,21 @@ public class OrderModel {
     private String orderDate;
     private String orderTime;
 
+    private String productPrice;
+    private String productQuantity;
+    private String productTotalPrice;
+
     private boolean isComplete;
 
     public OrderModel() {
     }
 
-    public OrderModel(String farmerId, String dealerId, String productId, String productName,
-                      String productDescription, String productQuantity, String productPrice,
-                      String productPicture, String orderId, String farmerName,
-                      String farmerContactNumber,
-                      String farmerPicture, String dealerName, String dealerContactNumber,
-                      String dealerPicture,
-                      String productCategory, String orderDate, String orderTime,
-                      boolean isComplete) {
-
+    public OrderModel(String farmerId, String dealerId, String productId, String productName, String productDescription, String productPicture, String orderId, String farmerName, String farmerContactNumber, String farmerPicture, String dealerName, String dealerContactNumber, String dealerPicture, String productCategory, String orderDate, String orderTime, String productPrice, String productQuantity, String productTotalPrice, boolean isComplete) {
         this.farmerId = farmerId;
         this.dealerId = dealerId;
         this.productId = productId;
         this.productName = productName;
         this.productDescription = productDescription;
-        this.productQuantity = productQuantity;
-        this.productPrice = productPrice;
         this.productPicture = productPicture;
         this.orderId = orderId;
         this.farmerName = farmerName;
@@ -44,27 +38,10 @@ public class OrderModel {
         this.productCategory = productCategory;
         this.orderDate = orderDate;
         this.orderTime = orderTime;
+        this.productPrice = productPrice;
+        this.productQuantity = productQuantity;
+        this.productTotalPrice = productTotalPrice;
         this.isComplete = isComplete;
-    }
-
-    public String getProductCategory() {
-        return productCategory;
-    }
-
-    public void setProductCategory(String productCategory) {
-        this.productCategory = productCategory;
-    }
-
-    public boolean isComplete() {
-        return isComplete;
-    }
-
-    public String getOrderId() {
-        return orderId;
-    }
-
-    public void setOrderId(String orderId) {
-        this.orderId = orderId;
     }
 
     public String getFarmerId() {
@@ -107,28 +84,20 @@ public class OrderModel {
         this.productDescription = productDescription;
     }
 
-    public String getProductQuantity() {
-        return productQuantity;
-    }
-
-    public void setProductQuantity(String productQuantity) {
-        this.productQuantity = productQuantity;
-    }
-
-    public String getProductPrice() {
-        return productPrice;
-    }
-
-    public void setProductPrice(String productPrice) {
-        this.productPrice = productPrice;
-    }
-
     public String getProductPicture() {
         return productPicture;
     }
 
     public void setProductPicture(String productPicture) {
         this.productPicture = productPicture;
+    }
+
+    public String getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
     }
 
     public String getFarmerName() {
@@ -179,6 +148,14 @@ public class OrderModel {
         this.dealerPicture = dealerPicture;
     }
 
+    public String getProductCategory() {
+        return productCategory;
+    }
+
+    public void setProductCategory(String productCategory) {
+        this.productCategory = productCategory;
+    }
+
     public String getOrderDate() {
         return orderDate;
     }
@@ -195,8 +172,32 @@ public class OrderModel {
         this.orderTime = orderTime;
     }
 
-    public boolean isComplete(boolean isComplete) {
-        return this.isComplete;
+    public String getProductPrice() {
+        return productPrice;
+    }
+
+    public void setProductPrice(String productPrice) {
+        this.productPrice = productPrice;
+    }
+
+    public String getProductQuantity() {
+        return productQuantity;
+    }
+
+    public void setProductQuantity(String productQuantity) {
+        this.productQuantity = productQuantity;
+    }
+
+    public String getProductTotalPrice() {
+        return productTotalPrice;
+    }
+
+    public void setProductTotalPrice(String productTotalPrice) {
+        this.productTotalPrice = productTotalPrice;
+    }
+
+    public boolean isComplete() {
+        return isComplete;
     }
 
     public void setComplete(boolean complete) {

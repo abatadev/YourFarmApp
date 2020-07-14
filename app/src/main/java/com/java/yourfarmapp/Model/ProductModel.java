@@ -1,5 +1,7 @@
 package com.java.yourfarmapp.Model;
 
+import android.text.Editable;
+
 import java.util.List;
 
 public class ProductModel {
@@ -29,22 +31,17 @@ public class ProductModel {
         this.cropProductID = cropProductID;
         this.cropName = cropName;
         this.cropDescription = cropDescription;
-    }
-
-    public String getProductCategoryName() {
-        return productCategoryName;
-    }
-
-    public void setProductCategoryName(String productCategoryName) {
+        this.cropPrice = cropPrice;
+        this.cropImage = cropImage;
+        this.cropQuantity = cropQuantity;
+        this.cropQuantityType = cropQuantityType;
+        this.userKey = userKey;
+        this.fullName = fullName;
+        this.number = number;
         this.productCategoryName = productCategoryName;
-    }
-
-    public int getListId() {
-        return listId;
-    }
-
-    public void setListId(int listId) {
         this.listId = listId;
+        this.farmerProfilePic = farmerProfilePic;
+        this.users = users;
     }
 
     public String getCropProductID() {
@@ -127,11 +124,35 @@ public class ProductModel {
         this.number = number;
     }
 
+    public String getProductCategoryName() {
+        return productCategoryName;
+    }
+
+    public void setProductCategoryName(String productCategoryName) {
+        this.productCategoryName = productCategoryName;
+    }
+
+    public int getListId() {
+        return listId;
+    }
+
+    public void setListId(int listId) {
+        this.listId = listId;
+    }
+
     public String getFarmerProfilePic() {
         return farmerProfilePic;
     }
 
     public void setFarmerProfilePic(String farmerProfilePic) {
         this.farmerProfilePic = farmerProfilePic;
+    }
+
+    public List<UserModel> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<UserModel> users) {
+        this.users = users;
     }
 }

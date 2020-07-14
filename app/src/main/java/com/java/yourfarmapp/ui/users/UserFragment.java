@@ -34,7 +34,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class UserFragment extends Fragment {
 
-    private UserViewModel userViewModel;
+    UserViewModel userViewModel;
     private RecyclerView recyclerView;
 
     private DatabaseReference userRef;
@@ -45,7 +45,7 @@ public class UserFragment extends Fragment {
 
         userViewModel =
                 ViewModelProviders.of(this).get(UserViewModel.class);
-        View root = inflater.inflate(R.layout.user_fragment, container, false);
+        View root = inflater.inflate(R.layout.fragment_user, container, false);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setReverseLayout(false);
@@ -65,7 +65,6 @@ public class UserFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         userViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
-
     }
 
     private void displayDealers() {
