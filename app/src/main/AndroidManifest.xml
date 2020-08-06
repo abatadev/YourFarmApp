@@ -12,8 +12,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ChatActivity" />
-        <activity android:name=".ViewProductItem" />
+        <activity android:name=".ui.chat.ChatActivity" />
+        <activity android:name=".ui.chat.ChatActivityBak" />
+        <activity android:name=".ui.product.ViewProductItem" />
         <activity
             android:name=".SignInActivity"
             android:label="@string/title_activity_shop"
@@ -27,7 +28,7 @@
         <activity android:name=".SignUpActivity" />
         <activity android:name=".MainActivity" />
         <activity android:name=".HomeActivity" />
-        <activity android:name=".AddProductActivity" />
+        <activity android:name=".ui.product.AddProductActivity" />
         <activity android:name=".UploadProfilePicture" />
 
         <activity android:name=".ui.product.ProductFragment" />

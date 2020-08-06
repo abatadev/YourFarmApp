@@ -1,4 +1,4 @@
-package com.java.yourfarmapp;
+package com.java.yourfarmapp.ui.product;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,8 +12,6 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -21,8 +19,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.java.yourfarmapp.ui.chat.ChatActivity;
+import com.java.yourfarmapp.ui.chat.ChatActivityBak;
 import com.java.yourfarmapp.Model.ProductModel;
 import com.java.yourfarmapp.Model.UserModel;
+import com.java.yourfarmapp.R;
 import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -47,6 +48,8 @@ public class ViewProductItem extends AppCompatActivity {
     DatabaseReference userReference;
     FirebaseDatabase productReference;
     FirebaseUser mUser;
+
+    String dealerName;
 
     UserModel userModel;
 
@@ -102,7 +105,7 @@ public class ViewProductItem extends AppCompatActivity {
                         public void onClick(View view) {
                             Intent chatIntent = new Intent(ViewProductItem.this, ChatActivity.class);
                             chatIntent.putExtra("dealerId", userId);
-                            //chatIntent.putExtra("dealerName", productModel.);
+                            chatIntent.putExtra("dealerName", dealerName);
                             chatIntent.putExtra("farmerId", productModel.getUserKey());
                             chatIntent.putExtra("farmerName", productModel.getFullName());
                             chatIntent.putExtra("productId", productModel.getCropProductID());
@@ -135,6 +138,18 @@ public class ViewProductItem extends AppCompatActivity {
     private void getProductDetails(String productId) {
         mUser = FirebaseAuth.getInstance().getCurrentUser();
         String userId = mUser.getUid();
+
+        FirebaseDatabase.getInstance().getReference().child("User").child(userId).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                dealerName = dataSnapshot.child("fullName").getValue(String.class);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
         FirebaseDatabase.getInstance().getReference().child("Product").child(productId)
         .addValueEventListener(new ValueEventListener() {
