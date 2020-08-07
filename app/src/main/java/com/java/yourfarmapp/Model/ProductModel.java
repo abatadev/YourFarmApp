@@ -17,6 +17,9 @@ public class ProductModel {
     private String fullName;
     private String number;
 
+    private Double ratingValue;
+    private int ratingCount;
+
     private String productCategoryName;
     private int listId;
 
@@ -154,5 +157,21 @@ public class ProductModel {
 
     public void setUsers(List<UserModel> users) {
         this.users = users;
+    }
+
+    public Double getRatingValue() {
+        return ratingValue;
+    }
+
+    public void setRatingValue(Double ratingValue) {
+        this.ratingValue = ratingValue;
+    }
+
+    public int getRatingCount() {
+        return ratingCount;
+    }
+
+    public void setRatingCount(int ratingCount) {
+        this.ratingCount = ratingCount;
     }
 }

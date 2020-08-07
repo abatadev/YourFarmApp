@@ -1,6 +1,4 @@
-package com.java.yourfarmapp.ui.farmers;
-
-import androidx.lifecycle.ViewModelProviders;
+package com.java.yourfarmapp.ui.inbox;
 
 import android.os.Bundle;
 
@@ -14,25 +12,22 @@ import android.view.ViewGroup;
 
 import com.java.yourfarmapp.R;
 
-public class FarmerFragment extends Fragment {
+public class InboxFragment extends Fragment {
 
-    private FarmerViewModel mViewModel;
-
-    public static FarmerFragment newInstance() {
-        return new FarmerFragment();
+    public static InboxFragment newInstance() {
+        return new InboxFragment();
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.farmer_fragment, container, false);
+        return inflater.inflate(R.layout.fragment_inbox, container, false);
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mViewModel = ViewModelProviders.of(this).get(FarmerViewModel.class);
-        // TODO: Use the ViewModel
+
     }
 
 }

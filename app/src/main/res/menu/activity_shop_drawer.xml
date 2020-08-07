@@ -19,9 +19,9 @@
             android:title="Users"/>
 
         <item
-            android:id="@+id/nav_farmer"
-            android:icon="@drawable/ic_filter_hdr_black_24dp"
-            android:title="Farmers"/>
+            android:id="@+id/nav_inbox"
+            android:icon="@drawable/ic_inbox_black_24dp"
+            android:title="Inbox"/>
 
         <item
             android:id="@+id/nav_profile"
@@ -32,11 +32,6 @@
             android:id="@+id/nav_orders"
             android:icon="@drawable/ic_shopping_cart_black_24dp"
             android:title="Orders" />
-
-        <item
-            android:id="@+id/nav_settings"
-            android:icon="@drawable/ic_settings_black_24dp"
-            android:title="Settings" />
 
         <item
             android:id="@+id/sign_out"

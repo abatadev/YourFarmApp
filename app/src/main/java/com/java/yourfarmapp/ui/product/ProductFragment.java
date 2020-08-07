@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,12 +41,11 @@ import butterknife.Unbinder;
 
 public class ProductFragment extends Fragment {
 
-    private Button addProductButton;
+    private LinearLayout productControlView;
+    private Button addProductButton, editProductButton, deleteProductButton;
     private Context context;
 
     private List<ProductModel> productModelList;
-
-
     private EditText productTitle;
     private EditText productDescription;
     ImageView productImage;
@@ -61,8 +61,6 @@ public class ProductFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-
-
         productViewModel = ViewModelProviders.of(   this).get(ProductViewModel.class); // Call view model
         View root = inflater.inflate(R.layout.fragment_product, container, false);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
@@ -72,20 +70,13 @@ public class ProductFragment extends Fragment {
         dbProduct = FirebaseDatabase.getInstance().getReference("Product");
         userRef = FirebaseDatabase.getInstance().getReference("User");
 
-
         productImage = root.findViewById(R.id.crop_image_mini);
-
+        editProductButton = root.findViewById(R.id.edit_product_button);
+        deleteProductButton = root.findViewById(R.id.delete_product_button);
+        productControlView = root.findViewById(R.id.product_control_layout);
         recyclerView = (RecyclerView) root.findViewById(R.id.list);
         recyclerView.setLayoutManager(linearLayoutManager);
 
-//        String fromCategoryId = getActivity().getIntent().getExtras().get("categoryId").toString();
-//        String fromCategoryName = getActivity().getIntent().getExtras().get("categoryName").toString();
-//
-//        Bundle extras = getActivity().getIntent().getExtras();
-
-        /**
-         * get current user, find if farmer is set to true then show button.
-         */
         mUser = FirebaseAuth.getInstance().getCurrentUser();
         String userId = mUser.getUid();
 
@@ -96,12 +87,14 @@ public class ProductFragment extends Fragment {
                 if(accountIsFarmer == true) {
                     // Show button
                     addProductButton.setVisibility(View.VISIBLE);
-                } else if (!accountIsFarmer){
+                    editProductButton.setVisibility(View.VISIBLE);
+                } else if (accountIsFarmer == false){
                     // Hide button
-                    addProductButton.setVisibility(View.INVISIBLE);
+                    addProductButton.setVisibility(View.GONE);
+                    editProductButton.setVisibility(View.GONE);
                 } else {
                     // For good measure
-                    addProductButton.setVisibility(View.INVISIBLE);
+                    addProductButton.setVisibility(View.GONE);
                 }
             }
 

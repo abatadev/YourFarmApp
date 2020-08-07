@@ -76,6 +76,8 @@ public class ChatActivity extends AppCompatActivity {
     String productId, cropName, cropPrice, cropPicture, saveCurrentTime, saveCurrentDate,
             orderId, farmerId, dealerId, farmerName, dealerName, cropDescription, cropQuantity, currentUserId;
 
+    private String receiverName, senderId, senderName, message;
+
     OrderModel orderModel = new OrderModel();
 
     boolean orderComplete = true;
@@ -121,11 +123,12 @@ public class ChatActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 ChatModel chatModel = dataSnapshot.getValue(ChatModel.class);
-//                Log.d("readChat", "Sender ID: " + chatModel.getSenderId().toString());
-//                Log.d("readChat", "Receiver ID: " + chatModel.getReceiverId().toString());
-//                Log.d("readChat", "Message: " + chatModel.getMessage().toString());
+                //Log.d("readChat", "Sender ID: " + chatModel.getSenderId().toString());
+                //Log.d("readChat", "Receiver ID: " + chatModel.getReceiverId().toString());
+                //Log.d("readChat", "Message: " + chatModel.getMessage().toString());
 
-                readChatMessages(dealerId, currentUserId); // Read chat message of the person who sent the message, currentUserId is the receiver.
+                readChatMessages(currentUserId, farmerId); // Read chat message of the person who sent the message, currentUserId is the receiver.
+                //currentUserId, receiverId
             }
 
             @Override
@@ -272,12 +275,12 @@ public class ChatActivity extends AppCompatActivity {
     private void sendChatMessage(String senderId, String senderName, String receiverId, String receiverName, String message) {
         ChatModel chatModel = new ChatModel();
 
-        HashMap<String, Object> hashMap = new HashMap<>();
-        hashMap.put("senderId", senderId);
-        hashMap.put("senderName", senderName);
-        hashMap.put("receiverId", receiverId);
-        hashMap.put("receiverName", receiverName);
-        hashMap.put("message", message);
+//        HashMap<String, Object> hashMap = new HashMap<>();
+//        hashMap.put("senderId", senderId);
+//        hashMap.put("senderName", senderName);
+//        hashMap.put("receiverId", receiverId);
+//        hashMap.put("receiverName", receiverName);
+//        hashMap.put("message", message);
 
         chatModel.setSenderId(senderId);
         chatModel.setSenderName(senderName);
@@ -294,6 +297,8 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     private void readChatMessages(final String currentUserId, final String receiverId) {
+        final String TAG = "readChatMessages";
+
         chatModelList = new ArrayList<>();
 
         chatRef.addValueEventListener(new ValueEventListener() {
@@ -313,13 +318,20 @@ public class ChatActivity extends AppCompatActivity {
 //                    if(chatModel.getReceiverId().equals(currentUserId) && chatModel.getSenderId().equals(receiverId) ||
 //                        chatModel.getReceiverId().equals(receiverId) && chatModel.getSenderId().equals(currentUserId)) {
 
+                    Log.d(TAG, "============");
+                    Log.d(TAG, "Current User ID: " + currentUserId);
+                    Log.d(TAG, "Receiver ID: " + receiverId.toString());
+//                    Log.d("TAG", "Sender ID: " + senderId.toString());
+//                    Log.d("TAG", "Message: " + message.toString());
+                    Log.d("TAG", "============");
+
                     if(receiverId.equals(currentUserId) && senderId.equals(receiverId) ||
                             receiverId.equals(receiverId) && senderId.equals(currentUserId)) {
 
                         chatModelList.add(chatModel);
 
                     } else {
-                        Log.d("readChatMessages", "If block failed.");
+                        Log.d("TAG", "If block failed.");
                     }
 
                     chatAdapter = new ChatAdapter(ChatActivity.this, chatModelList);

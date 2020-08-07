@@ -57,21 +57,21 @@ public class HomeActivity extends AppCompatActivity implements   NavigationView.
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton messagesFloatingButton = findViewById(R.id.fab);
-        messagesFloatingButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+//        FloatingActionButton messagesFloatingButton = findViewById(R.id.fab);
+//        messagesFloatingButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+//            }
+//        });
 
         drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         //View headerView = navigationView.getHeaderView(0);
 
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_product, R.id.nav_user, R.id.nav_profile, R.id.nav_settings)
+                R.id.nav_home, R.id.nav_product, R.id.nav_user, R.id.nav_inbox, R.id.nav_profile)
                 .setDrawerLayout(drawer)
                 .build();
 
@@ -112,10 +112,10 @@ public class HomeActivity extends AppCompatActivity implements   NavigationView.
                     navController.navigate(R.id.nav_user);
                 }
                 break;
-            case R.id.nav_farmer:
+            case R.id.nav_inbox:
                 if(menuItem.getItemId() != menuClick) {
                     navController.popBackStack();
-                    navController.navigate(R.id.nav_farmer);
+                    navController.navigate(R.id.nav_inbox);
                 }
                 break;
             case R.id.nav_profile:
@@ -130,13 +130,6 @@ public class HomeActivity extends AppCompatActivity implements   NavigationView.
                     navController.navigate(R.id.nav_orders);
                 }
                 break;
-            case R.id.nav_settings:
-                if(menuItem.getItemId() != menuClick) {
-                    navController.popBackStack();
-                    navController.navigate(R.id.nav_settings);
-                }
-                break;
-
             case R.id.sign_out:
                 signOut();
                 break;

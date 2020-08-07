@@ -5,6 +5,8 @@
     <color name="colorAccent">#03DAC5</color>
     <color name="colorBlack">#191919</color>
     <color name="colorWhite">#FFFFFF</color>
+    <color name="colorRed">#8F0000</color>
+    <color name="colorOrange">#DF690C</color>
     <color name="senderColor">#F3B1B1</color>
     <color name="receiverColor">#ACF6FF</color>
     <color name="colorGrey">#AAAAAA</color>
