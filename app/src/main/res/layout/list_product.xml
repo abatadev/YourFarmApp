@@ -72,38 +72,6 @@
                 android:text="Price"/>
 
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-            <RatingBar
-                android:id="@+id/product_rating"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                style="@style/Widget.AppCompat.RatingBar.Small"
-                android:scaleX="1"
-                android:scaleY="1"
-                android:numStars="5"
-                android:rating="1"/>
-
-                <TextView
-                    android:id="@+id/number_of_ratings"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="1 Rating(s)"
-                    android:layout_marginLeft="8dp"
-                    />
-
-                <ImageView
-                    android:layout_width="16dp"
-                    android:layout_height="16dp"
-                    android:layout_marginLeft="8dp"
-                    android:src="@drawable/ic_arrow_forward_black_24dp"
-                    />
-
-            </LinearLayout>
-
-            <LinearLayout
                 android:id="@+id/product_control_layout"
                 android:layout_width="match_parent"
                 android:layout_height="35dp"
@@ -118,6 +86,7 @@
                     android:layout_weight="1"
                     android:textColor="@color/colorWhite"
                     android:background="@color/colorOrange"
+                    android:visibility="visible"
                     android:text="Edit"/>
 
                 <Button
@@ -127,6 +96,7 @@
                     android:layout_weight="1"
                     android:textColor="@color/colorWhite"
                     android:background="@color/colorRed"
+                    android:visibility="visible"
                     android:text="Delete"/>
 
             </LinearLayout>

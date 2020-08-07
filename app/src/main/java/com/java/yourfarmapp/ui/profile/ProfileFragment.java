@@ -34,7 +34,6 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.java.yourfarmapp.Common.Common;
 import com.java.yourfarmapp.Model.UserModel;
 import com.java.yourfarmapp.R;
-import com.java.yourfarmapp.ui.product.ProductViewModel;
 
 public class ProfileFragment extends Fragment {
 
@@ -42,7 +41,6 @@ public class ProfileFragment extends Fragment {
 
     private Uri imagePath = null;
 
-    private ProductViewModel productViewModel;
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener fireAuthListener;
     private FirebaseDatabase firebaseDatabase;
@@ -77,10 +75,8 @@ public class ProfileFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-
         final String TAG = "onCreateView";
 
-        productViewModel = ViewModelProviders.of(this).get(ProductViewModel.class); // Call view model
         View root = inflater.inflate(R.layout.fragment_profile, container, false);
 
         //TextView textView = root.findViewById(R.id.text_gallery);

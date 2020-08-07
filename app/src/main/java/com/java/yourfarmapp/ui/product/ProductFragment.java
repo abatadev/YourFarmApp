@@ -1,6 +1,7 @@
 package com.java.yourfarmapp.ui.product;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -22,6 +24,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -44,56 +48,67 @@ public class ProductFragment extends Fragment {
     private LinearLayout productControlView;
     private Button addProductButton, editProductButton, deleteProductButton;
     private Context context;
-
     private List<ProductModel> productModelList;
-    private EditText productTitle;
-    private EditText productDescription;
-    ImageView productImage;
-
+    private EditText productTitle, productDescription;
+    private ImageView productImage;
     private RecyclerView recyclerView;
+    private DatabaseReference dbProduct, userRef, productRef;
+    private FirebaseUser mUser;
+    private String userId, productId;
+    private boolean accountIsFarmer;
 
-    DatabaseReference dbProduct;
-    DatabaseReference userRef;
-
-    FirebaseUser mUser;
-    ProductViewModel productViewModel;
+    private FirebaseRecyclerOptions<ProductModel> options;
+    private FirebaseRecyclerAdapter<ProductModel, ProductViewHolder> adapter;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        productViewModel = ViewModelProviders.of(   this).get(ProductViewModel.class); // Call view model
         View root = inflater.inflate(R.layout.fragment_product, container, false);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         linearLayoutManager.setReverseLayout(true);
         linearLayoutManager.setStackFromEnd(true);
 
-        dbProduct = FirebaseDatabase.getInstance().getReference("Product");
-        userRef = FirebaseDatabase.getInstance().getReference("User");
-
-        productImage = root.findViewById(R.id.crop_image_mini);
-        editProductButton = root.findViewById(R.id.edit_product_button);
-        deleteProductButton = root.findViewById(R.id.delete_product_button);
-        productControlView = root.findViewById(R.id.product_control_layout);
         recyclerView = (RecyclerView) root.findViewById(R.id.list);
         recyclerView.setLayoutManager(linearLayoutManager);
 
         mUser = FirebaseAuth.getInstance().getCurrentUser();
-        String userId = mUser.getUid();
+        userId = mUser.getUid();
 
+        initializeContentView(root);
+        initializeDatabase();
+        checkUserAccountType(userId);
+        displayProducts();
+
+        return root;
+    }
+
+    private void checkUserAccountType(String userId) {
+        final String TAG ="checkUserAccountType";
+
+        Log.d(TAG, "User ID: " + userId);
         userRef.child(userId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                boolean accountIsFarmer = dataSnapshot.child("farmer").getValue(Boolean.class);
+                accountIsFarmer = dataSnapshot.child("farmer").getValue(Boolean.class);
                 if(accountIsFarmer == true) {
                     // Show button
+                    accountIsFarmer = true;
                     addProductButton.setVisibility(View.VISIBLE);
-                    editProductButton.setVisibility(View.VISIBLE);
+
+                    addProductButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Intent intent = new Intent(getContext(), AddProductActivity.class);
+                            startActivity(intent);
+                        }
+                    });
                 } else if (accountIsFarmer == false){
                     // Hide button
+                    accountIsFarmer = false;
                     addProductButton.setVisibility(View.GONE);
-                    editProductButton.setVisibility(View.GONE);
                 } else {
                     // For good measure
+                    accountIsFarmer = false;
                     addProductButton.setVisibility(View.GONE);
                 }
             }
@@ -103,90 +118,89 @@ public class ProductFragment extends Fragment {
 
             }
         });
-
-
-        addProductButton = root.findViewById(R.id.add_product);
-        addProductButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getContext(), AddProductActivity.class);
-
-//                extras.putString("categoryId", fromCategoryId);
-//                extras.putString("categoryName", fromCategoryName);
-//                intent.putExtras(extras);
-                startActivity(intent);
-            }
-        });
-
-
-        displayProducts();
-
-        return root;
     }
 
-    public void displayProducts() {
+    private void initializeContentView(View root) {
+        productImage = root.findViewById(R.id.crop_image_mini);
+        editProductButton = root.findViewById(R.id.edit_product_button);
+        deleteProductButton = root.findViewById(R.id.delete_product_button);
+        productControlView = root.findViewById(R.id.product_control_layout);
+        addProductButton = root.findViewById(R.id.add_product);
+    }
+
+    private void initializeDatabase() {
+        dbProduct = FirebaseDatabase.getInstance().getReference("Product");
+        userRef = FirebaseDatabase.getInstance().getReference("User");
+        productRef = FirebaseDatabase.getInstance().getReference("Product");
+    }
+
+
+    private void displayProducts() {
         final String TAG = "displayProducts";
+        //Query query = productRef.orderByChild("maidName").startAt(data).endAt(data + "\uf8ff");
 
-        Query query = dbProduct;
+        if(accountIsFarmer == true) { // Load own products if farmer
+            options = new FirebaseRecyclerOptions.Builder<ProductModel>().setQuery(FirebaseDatabase.getInstance().getReference("Product").child(userId), ProductModel.class).build();
+        } else { // Load all products if dealer
+            options = new FirebaseRecyclerOptions.Builder<ProductModel>().setQuery(FirebaseDatabase.getInstance().getReference("Product"), ProductModel.class).build();
+        }
 
-        FirebaseRecyclerOptions<ProductModel> options = new FirebaseRecyclerOptions.Builder<ProductModel>().setQuery(query, ProductModel.class).build();
+        adapter = new FirebaseRecyclerAdapter<ProductModel, ProductViewHolder>(options) {
 
-        FirebaseRecyclerAdapter adapter = new FirebaseRecyclerAdapter<ProductModel, ProductViewHolder>(options) {
+            @Override
+            protected void onBindViewHolder(@NonNull ProductViewHolder productViewHolder, int i, @NonNull ProductModel productModel) {
+                productId = productModel.getCropProductID();
+
+                productViewHolder.productNameTextView.setText(productModel.getCropName());
+                productViewHolder.productDescriptionTextView.setText(productModel.getCropDescription());
+                productViewHolder.productPriceTextView.setText(productModel.getCropPrice());
+
+                Picasso.get().load(productModel.getCropImage()).fit().into(productViewHolder.productImage);
+
+                Log.d(TAG, "Farmer: " + accountIsFarmer);
+
+                if(accountIsFarmer == true) {
+                    productViewHolder.editProductButton.setVisibility(View.VISIBLE);
+                    productViewHolder.deleteProductButton.setVisibility(View.VISIBLE);
+                    Toast.makeText(getContext(), "Welcome back farmer!", Toast.LENGTH_SHORT).show();
+
+                    productViewHolder.editProductButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Intent intent = new Intent(getContext(), EditProductActivity.class);
+
+                            intent.putExtra("cropProductId", productModel.getCropProductID());
+                            intent.putExtra("cropName", productModel.getCropName());
+                            intent.putExtra("cropDescription", productModel.getCropDescription());
+                            intent.putExtra("cropPrice", productModel.getCropPrice());
+                            intent.putExtra("cropQuantity", productModel.getCropQuantity());
+                            intent.putExtra("cropImage", productModel.getCropImage());
+
+                            startActivity(intent);
+                        }
+                    });
+
+                    productViewHolder.deleteProductButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            String deleteProductKey = getRef(i).getKey();
+                            deleteProductEntry(deleteProductKey);
+                        }
+                    });
+                } else {
+                    productViewHolder.editProductButton.setVisibility(View.GONE);
+                    productViewHolder.deleteProductButton.setVisibility(View.GONE);
+                }
+
+
+            }
+
+
             @NonNull
             @Override
             public ProductViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
                 View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_product, parent, false);
                 return new ProductViewHolder(view);
-            }
-
-            @Override
-            protected void onBindViewHolder(@NonNull ProductViewHolder productViewHolder, int position, @NonNull ProductModel productModel) {
-                final String cropProductId = getRef(position).getKey(); // Note
-
-                dbProduct.child(cropProductId).addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        Log.d(TAG, "DB Product: " + dbProduct.child("5").child("Product").child(cropProductId).toString());
-                        Log.d(TAG, "DB Product: " + dbProduct.toString());
-
-                        if(dataSnapshot.exists()) {
-                            final String productTitle = dataSnapshot.child("cropName").getValue().toString();
-                            final String productDescription = dataSnapshot.child("cropDescription").getValue().toString();
-                            final String productPrice = dataSnapshot.child("cropPrice").getValue().toString();
-                            final String productImageString = dataSnapshot.child("cropImage").getValue().toString();
-
-                            //View holder to set name
-                            productViewHolder.setProductName(productTitle);
-                            productViewHolder.setProductDescription(productDescription);
-                            productViewHolder.setProductPrice("₱: " + productPrice);
-                            productViewHolder.setCropPicture(productImageString);
-
-                            productViewHolder.mView.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    Log.d(TAG, "Product ID: " + cropProductId);
-                                    Toast.makeText(getContext(), "ON CLICK TESTING!", Toast.LENGTH_SHORT).show();
-
-                                    Intent intent = new Intent(getContext(), ViewProductItem.class);
-                                    intent.putExtra("cropProductId", productModel.getCropProductID());
-                                    startActivity(intent);
-
-                                }
-                            });
-
-//                            Glide.with(context).load(productModel.getCropImage()).into(productViewHolder.productImage);
-
-                        } else {
-                            Log.d(TAG, "DB Product ELSE: " + dbProduct.getRef().getKey().toString());
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
-
             }
 
         };
@@ -195,38 +209,33 @@ public class ProductFragment extends Fragment {
         recyclerView.setAdapter(adapter);
     }
 
-    public static class ProductViewHolder extends RecyclerView.ViewHolder {
-        private Unbinder unbinder;
-        @BindView(R.id.product_image)
-        ImageView productImage;
+    private void deleteProductEntry(String deleteProductKey) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setMessage("Delete this Maid entry?");
+        builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                productRef.child(deleteProductKey).removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Toast.makeText(getContext(), "Product has been deleted from the database.", Toast.LENGTH_SHORT).show();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(getContext(), "Delete failed.", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
 
-        View mView;
-
-        public ProductViewHolder(View itemView) {
-            super(itemView);
-            mView = itemView;
-        }
-
-        public void setProductName(String fullName){
-            TextView myName = (TextView) mView.findViewById(R.id.product_name);
-            myName.setText(fullName);
-        }
-
-        public void setProductDescription(String description){
-            TextView productDescription = (TextView) mView.findViewById(R.id.product_description);
-            productDescription.setText(description);
-        }
-
-        public void setProductPrice(String price) {
-            TextView productPrice = (TextView) mView.findViewById(R.id.product_price);
-            productPrice.setText(price);
-
-        }
-
-        public void setCropPicture(String picture) {
-            ImageView productPicture = mView.findViewById(R.id.crop_image_mini);
-            Picasso.get().load(picture).fit().into(productPicture);
-        }
+        builder.create();
+        builder.show();
 
     }
 

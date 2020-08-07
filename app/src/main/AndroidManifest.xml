@@ -12,6 +12,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".ui.product.EditProductActivity"></activity>
         <activity android:name=".ui.chat.ChatActivity" />
         <activity android:name=".ui.chat.ChatActivityBak" />
         <activity android:name=".ui.product.ViewProductItem" />
@@ -30,9 +31,7 @@
         <activity android:name=".HomeActivity" />
         <activity android:name=".ui.product.AddProductActivity" />
         <activity android:name=".UploadProfilePicture" />
-
         <activity android:name=".ui.product.ProductFragment" />
-
     </application>
 
 </manifest>
