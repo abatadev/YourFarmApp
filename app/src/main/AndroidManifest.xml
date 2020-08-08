@@ -15,7 +15,7 @@
         <activity android:name=".ui.product.EditProductActivity"></activity>
         <activity android:name=".ui.chat.ChatActivity" />
         <activity android:name=".ui.chat.ChatActivityBak" />
-        <activity android:name=".ui.product.ViewProductItem" />
+        <activity android:name=".ui.product.ViewProductItemActivity" />
         <activity
             android:name=".SignInActivity"
             android:label="@string/title_activity_shop"

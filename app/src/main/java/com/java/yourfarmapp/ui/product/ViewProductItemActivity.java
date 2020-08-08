@@ -41,7 +41,7 @@ import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class ViewProductItem extends AppCompatActivity {
+public class ViewProductItemActivity extends AppCompatActivity {
 
     TextView productName, productDescription, productPrice, productQuantity, farmerName, farmerPhoneNumber;
     FloatingActionButton ratingBarFab;
@@ -68,6 +68,7 @@ public class ViewProductItem extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_product_item);
+
         cropProductId = getIntent().getExtras().get("cropProductId").toString();
 
         initializeViews();
@@ -95,7 +96,7 @@ public class ViewProductItem extends AppCompatActivity {
     }
 
     private void startChatFarmerActivity() {
-        Intent chatIntent = new Intent(ViewProductItem.this, ChatActivity.class);
+        Intent chatIntent = new Intent(ViewProductItemActivity.this, ChatActivity.class);
         chatIntent.putExtra("dealerId", userId);
         chatIntent.putExtra("dealerName", dealerName);
         chatIntent.putExtra("farmerId", productModel.getUserKey());
@@ -162,6 +163,7 @@ public class ViewProductItem extends AppCompatActivity {
                             productName.setText(productModel.getCropName());
                             productDescription.setText("Description: " + productModel.getCropDescription());
                             productPrice.setText("₱: " + productModel.getCropPrice());
+                            productRating.setRating(productModel.getRatingCount());
 
                             //Rating Bar
                             farmerName.setText(productModel.getFullName());
@@ -227,7 +229,7 @@ public class ViewProductItem extends AppCompatActivity {
                         });
 
                     } else {
-                        Toast.makeText(ViewProductItem.this, "Unable to get user details.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ViewProductItemActivity.this, "Unable to get user details.", Toast.LENGTH_SHORT).show();
                     }
                 }
 
@@ -259,7 +261,7 @@ public class ViewProductItem extends AppCompatActivity {
     private void openRatingDialog() {
         mAuth = FirebaseAuth.getInstance();
 
-        AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(ViewProductItem.this);
+        AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(ViewProductItemActivity.this);
         builder.setTitle("Rating");
         builder.setMessage("What do you think of this product?");
 
@@ -311,7 +313,7 @@ public class ViewProductItem extends AppCompatActivity {
             .addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(ViewProductItem.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ViewProductItemActivity.this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
 
@@ -348,9 +350,9 @@ public class ViewProductItem extends AppCompatActivity {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if(task.isSuccessful()) {
-                                        Toast.makeText(ViewProductItem.this, "Thank you!", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(ViewProductItemActivity.this, "Thank you!", Toast.LENGTH_SHORT).show();
                                     } else {
-                                        Toast.makeText(ViewProductItem.this, "Error: " , Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(ViewProductItemActivity.this, "Error: " , Toast.LENGTH_SHORT).show();
                                     }
                                 }
                             });
@@ -359,7 +361,7 @@ public class ViewProductItem extends AppCompatActivity {
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
-                    Toast.makeText(ViewProductItem.this, "" + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ViewProductItemActivity.this, "" + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
     }

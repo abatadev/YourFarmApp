@@ -32,7 +32,6 @@ public class ProductRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             productPriceTextView = itemView.findViewById(R.id.product_price);
             editProductButton = itemView.findViewById(R.id.edit_product_button);
             deleteProductButton = itemView.findViewById(R.id.delete_product_button);
-
         }
     }
     @NonNull

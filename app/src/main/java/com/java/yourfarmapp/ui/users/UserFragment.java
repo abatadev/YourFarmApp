@@ -78,7 +78,7 @@ public class UserFragment extends Fragment {
             @NonNull
             @Override
             public DealerViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_dealer, parent, false);
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_view_list_dealer, parent, false);
                 return new DealerViewHolder(view);
             }
 

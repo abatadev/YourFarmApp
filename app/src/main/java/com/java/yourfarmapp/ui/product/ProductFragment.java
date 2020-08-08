@@ -12,13 +12,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -32,16 +30,12 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.java.yourfarmapp.Model.ProductModel;
 import com.java.yourfarmapp.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
-
-import butterknife.BindView;
-import butterknife.Unbinder;
 
 public class ProductFragment extends Fragment {
 
@@ -148,7 +142,7 @@ public class ProductFragment extends Fragment {
         adapter = new FirebaseRecyclerAdapter<ProductModel, ProductViewHolder>(options) {
 
             @Override
-            protected void onBindViewHolder(@NonNull ProductViewHolder productViewHolder, int i, @NonNull ProductModel productModel) {
+            protected void onBindViewHolder(@NonNull final ProductViewHolder productViewHolder, int i, @NonNull ProductModel productModel) {
                 productId = productModel.getCropProductID();
 
                 productViewHolder.productNameTextView.setText(productModel.getCropName());
@@ -168,14 +162,7 @@ public class ProductFragment extends Fragment {
                         @Override
                         public void onClick(View view) {
                             Intent intent = new Intent(getContext(), EditProductActivity.class);
-
-                            intent.putExtra("cropProductId", productModel.getCropProductID());
-                            intent.putExtra("cropName", productModel.getCropName());
-                            intent.putExtra("cropDescription", productModel.getCropDescription());
-                            intent.putExtra("cropPrice", productModel.getCropPrice());
-                            intent.putExtra("cropQuantity", productModel.getCropQuantity());
-                            intent.putExtra("cropImage", productModel.getCropImage());
-
+                            intent.putExtra("cropProductId", getRef(i).getKey());
                             startActivity(intent);
                         }
                     });
@@ -187,19 +174,31 @@ public class ProductFragment extends Fragment {
                             deleteProductEntry(deleteProductKey);
                         }
                     });
+
                 } else {
                     productViewHolder.editProductButton.setVisibility(View.GONE);
                     productViewHolder.deleteProductButton.setVisibility(View.GONE);
                 }
 
 
+                productViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        String cropProductId = getRef(i).getKey();
+
+                        Intent intent = new Intent(getContext(), ViewProductItemActivity.class);
+
+                        intent.putExtra("cropProductId", cropProductId);
+                        startActivity(intent);
+                    }
+                });
             }
 
 
             @NonNull
             @Override
             public ProductViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_product, parent, false);
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_view_list_product, parent, false);
                 return new ProductViewHolder(view);
             }
 

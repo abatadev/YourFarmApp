@@ -12,15 +12,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.ViewPager;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
@@ -31,13 +26,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.java.yourfarmapp.Model.CategoryModel;
-import com.java.yourfarmapp.Model.ProductModel;
 import com.java.yourfarmapp.R;
-import com.java.yourfarmapp.ui.product.ProductFragment;
 import com.squareup.picasso.Picasso;
-
-import java.util.HashMap;
-import java.util.Map;
 
 public class HomeFragment extends Fragment {
 
@@ -82,7 +72,7 @@ public class HomeFragment extends Fragment {
             @NonNull
             @Override
             public HomeViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_category, parent, false);
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_view_category, parent, false);
                 return new HomeViewHolder(view);
             }
 
@@ -105,27 +95,7 @@ public class HomeFragment extends Fragment {
                             homeViewHolder.mView.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
-//                                    Toast.makeText(getContext(), "ID: " + categoryId, Toast.LENGTH_SHORT).show();
-//                                    //Switch to bundle
-//                                    Intent intent = new Intent(getActivity(), ProductFragment.class);
-//                                    intent.putExtra("categoryNameToString", categoryNameToString);
-//                                    intent.putExtra("categoryId", categoryNameToString);
-//                                    startActivity(intent);
-
-//                                    ProductFragment productFragment = new ProductFragment();
-//                                    Bundle bundle = new Bundle();
-//                                    bundle.putString("categoryName" , categoryImageToString);
-//                                    bundle.putString("categoryId", categoryId);
-//                                    productFragment.setArguments(bundle);
-
-
-//                                    FragmentManager fragmentManager = getFragmentManager();
-//                                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//                                    Fragment productFragment = new Fragment();
-//                                    fragmentTransaction.replace(R.id.product_container, productFragment);
-//                                    fragmentTransaction.addToBackStack(null);
-//                                    fragmentTransaction.commit();
-
+                                    Intent intent = new Intent();
                                 }
                             });
                             

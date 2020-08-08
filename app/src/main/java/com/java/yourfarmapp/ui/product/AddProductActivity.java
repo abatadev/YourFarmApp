@@ -264,31 +264,31 @@ public class AddProductActivity extends AppCompatActivity {
             }
         }); //Send phone number to product
 
-        userReference.child(userId).child("dealer").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                boolean dealer = dataSnapshot.getValue(boolean.class);
-                productReference.child(productId).child("dealer").setValue(dealer);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
-        userReference.child(userId).child("farmer").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                boolean farmer = dataSnapshot.getValue(boolean.class);
-                productReference.child(productId).child("farmer").setValue(farmer);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
+//        userReference.child(userId).child("dealer").addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                boolean dealer = dataSnapshot.getValue(boolean.class);
+//                productReference.child(productId).child("dealer").setValue(dealer);
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//            }
+//        });
+//
+//        userReference.child(userId).child("farmer").addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                boolean farmer = dataSnapshot.getValue(boolean.class);
+//                productReference.child(productId).child("farmer").setValue(farmer);
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//            }
+//        });
 
         userReference.child(userId).child("profilePic").addValueEventListener(new ValueEventListener() {
             @Override
